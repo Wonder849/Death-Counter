@@ -1,4 +1,5 @@
 import 'package:death_counter/styles/colors.dart';
+import 'package:death_counter/styles/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -13,7 +14,7 @@ class CustomTitleBar extends StatelessWidget {
       height: 40,
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: MyColors.bordersColor, width: 0.4),
+          bottom: BorderSide(color: MyColors.bordersColor, width: MySizes.borderWidth),
         ),
       ),
       child: Row(
@@ -59,6 +60,7 @@ class TitleBarButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       hoverColor: MyColors.hoverTitleBarColor,
+      splashColor: Colors.transparent,
       child: Container(
         width: 40,
         height: 40,

@@ -11,7 +11,8 @@ void main() async {
     titleBarStyle: TitleBarStyle.hidden, // Hide classic title bar
     size: Size(800, 600),
     minimumSize: Size(800, 600),
-    maximumSize: Size(800, 600)
+    maximumSize: Size(800, 600),
+    center: true
   );
 
   windowManager.waitUntilReadyToShow(windowOptions, () async {
