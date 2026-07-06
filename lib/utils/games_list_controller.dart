@@ -11,15 +11,25 @@ class GamesListController {
     gamesList = gamesList;
   }
 
-  void AddGame({required GameModel game}){
+  void AddGame({required GameModel game}) {
     this.gamesList?.add(game);
+
+    print("${game.gameName} game was added.");
   }
 
-  void DeleteGame(){
-
+  void DeleteGame(int index) {
+    this.gamesList?.removeAt(index);
+    
+    print("${this.gamesList?.elementAt(index).gameName} game was deleted.");
   }
 
-  void ChangeGameInfo(Image? gameIcon, gameName,int? gameDeaths, List<BossModel>? bosses){
+  void ChangeGameInfo(int gameIndex, ImageProvider? gameIcon, gameName,int? gameDeaths, List<BossModel>? bosses) {
+    var game = this.gamesList?.elementAt(gameIndex);
 
+    game?.gameName = gameName;
+    game?.gameDeaths = gameDeaths;
+    game?.bosses = bosses;
+
+    print("${game?.gameName} game info was changed.");
   }
 }

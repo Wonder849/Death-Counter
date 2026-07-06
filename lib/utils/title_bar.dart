@@ -26,7 +26,7 @@ class CustomTitleBar extends StatelessWidget {
               textAlign: TextAlign.center, 
               style: TextStyle(
                 color:MyColors.whiteColor,
-                fontSize: 20,
+                fontSize: 18,
               ),
             )
           )),

@@ -8,4 +8,5 @@ class MyColors
   static const yellowColor = Color(0xFFB8820A);
   static const almostYellowColor = Color(0xFFA6965F);
   static const hoverTitleBarColor = Color.fromARGB(65, 255, 255, 255);
+  static const activeTileBg = Color(0xFF17170C);
 }

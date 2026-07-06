@@ -9,18 +9,19 @@ class GameListHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
+      height: MySizes.headersHeight,
       alignment: AlignmentGeometry.centerStart,
       padding: EdgeInsets.only(left: MySizes.textPad20),
-      decoration: BoxDecoration(border: Border(right: BorderSide(color: MyColors.bordersColor, width: MySizes.borderWidth)), ),
+      decoration: BoxDecoration(border: Border(right: BorderSide(color: MyColors.bordersColor, width: MySizes.borderWidth), bottom: BorderSide(color: MyColors.bordersColor, width: MySizes.borderWidth))),
       child: Text(
         "GAMES",
-        style: TextStyle(color: MyColors.whiteColor, fontSize: 16),
+        style: TextStyle(color: MyColors.whiteColor, fontSize: MySizes.titlesTextSz),
       ),
     );
   }
 }
 
+// Header above boses list
 class BossListHeader extends StatefulWidget {
   const BossListHeader({super.key});
 
@@ -32,8 +33,9 @@ class _BossListHeaderState extends State<BossListHeader> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
+      height: MySizes.headersHeight,
       padding: EdgeInsets.only(left: MySizes.textPad20),
+      decoration: BoxDecoration(border: Border(bottom: BorderSide(width: MySizes.borderWidth, color: MyColors.bordersColor))),
       child: Row(
         children: [
           Container(
@@ -41,8 +43,8 @@ class _BossListHeaderState extends State<BossListHeader> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Header", style: TextStyle(color: MyColors.almostYellowColor, fontSize: 20)),
-                Text("Subheader", style: TextStyle(color: MyColors.whiteColor, fontSize: 10))
+                Text("Header", style: TextStyle(color: MyColors.almostYellowColor, fontSize: MySizes.titlesTextSz)),
+                Text("Subheader", style: TextStyle(color: MyColors.whiteColor, fontSize: MySizes.subTitlesTextSz))
               ],
             ),
           )
