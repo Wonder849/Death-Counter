@@ -3,7 +3,7 @@ import 'package:death_counter/styles/colors.dart';
 import 'package:death_counter/styles/sizes.dart';
 import 'package:flutter/material.dart';
 
-// Widget, contains game info
+// Widget that contains game info
 class GameTile extends StatefulWidget {
   final GameModel game;
 
@@ -25,7 +25,6 @@ class _GameTileState extends State<GameTile> {
         border: Border(
           left: isSelected? BorderSide(width: 2, color: MyColors.yellowColor) : BorderSide(color: Colors.transparent),
           bottom: BorderSide(width: MySizes.borderWidth, color: MyColors.bordersColor),
-          right: BorderSide(width: MySizes.borderWidth, color: MyColors.bordersColor)
         )
       ),
       child: Container(

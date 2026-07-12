@@ -12,7 +12,7 @@ class GameListHeader extends StatelessWidget {
       height: MySizes.headersHeight,
       alignment: AlignmentGeometry.centerStart,
       padding: EdgeInsets.only(left: MySizes.textPad20),
-      decoration: BoxDecoration(border: Border(right: BorderSide(color: MyColors.bordersColor, width: MySizes.borderWidth), bottom: BorderSide(color: MyColors.bordersColor, width: MySizes.borderWidth))),
+      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: MyColors.bordersColor, width: MySizes.borderWidth))),
       child: Text(
         "GAMES",
         style: TextStyle(color: MyColors.whiteColor, fontSize: MySizes.titlesTextSz),

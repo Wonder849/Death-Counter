@@ -1,5 +1,6 @@
 import 'package:death_counter/models/game_model.dart';
 import 'package:death_counter/styles/colors.dart';
+import 'package:death_counter/styles/sizes.dart';
 import 'package:death_counter/tiles.dart/game_tile.dart';
 import 'package:death_counter/utils/lists_headers.dart';
 import 'package:death_counter/utils/title_bar.dart';
@@ -19,17 +20,20 @@ class _MainPageState extends State<MainPage> {
       body: Column(
         children: [
           CustomTitleBar(),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(flex: 1, child: Column(
-                children: [
-                  GameListHeader(),
-                  GameTile(game: GameModel(gameName: "asd"))
-                ],
-              )),
-              Expanded(flex: 2, child: BossListHeader()),
-            ],
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(flex: 1, child: Column(
+                  children: [
+                    GameListHeader(),
+                    GameTile(game: GameModel(gameName: "asd"))
+                  ],
+                )),
+                VerticalDivider(width: MySizes.borderWidth, color: MyColors.bordersColor, thickness: MySizes.borderWidth,),
+                Expanded(flex: 2, child: BossListHeader()),
+              ],
+            ),
           ),
         ],
       ),
