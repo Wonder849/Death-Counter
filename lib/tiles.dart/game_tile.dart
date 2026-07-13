@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class GameTile extends StatefulWidget {
   final GameModel game;
 
-  GameTile({required this.game, super.key});
+  const GameTile({required this.game, super.key});
 
   @override
   State<GameTile> createState() => _GameTileState();
@@ -19,17 +19,18 @@ class _GameTileState extends State<GameTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 40,
+      height: MySizes.tilesHight,
       decoration: BoxDecoration(
         color: isSelected ? MyColors.activeTileBg : Colors.transparent,
         border: Border(
           left: isSelected? BorderSide(width: 2, color: MyColors.yellowColor) : BorderSide(color: Colors.transparent),
-          bottom: BorderSide(width: MySizes.borderWidth, color: MyColors.bordersColor),
+          bottom: BorderSide(color: MyColors.bordersColor, width: 1)
         )
       ),
       child: Container(
         padding: EdgeInsets.only(left: 30),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image(
               image: widget.game.gameIcon, height: MySizes.iconsSz, width: MySizes.iconsSz, fit: BoxFit.contain
@@ -37,12 +38,13 @@ class _GameTileState extends State<GameTile> {
             Container(
               padding: EdgeInsets.only(left: 20),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     widget.game.gameName,
                     style: TextStyle(
                       color: isSelected? MyColors.almostYellowColor : MyColors.whiteColor,
-                      fontSize: 10,
+                      fontSize: MySizes.tilesTextSz,
                     ),
                   ),
                   Text(

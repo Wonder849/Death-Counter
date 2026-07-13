@@ -1,6 +1,8 @@
+import 'package:death_counter/models/boss_model.dart';
 import 'package:death_counter/models/game_model.dart';
 import 'package:death_counter/styles/colors.dart';
 import 'package:death_counter/styles/sizes.dart';
+import 'package:death_counter/tiles.dart/boss_tile.dart';
 import 'package:death_counter/tiles.dart/game_tile.dart';
 import 'package:death_counter/utils/lists_headers.dart';
 import 'package:death_counter/utils/title_bar.dart';
@@ -31,7 +33,12 @@ class _MainPageState extends State<MainPage> {
                   ],
                 )),
                 VerticalDivider(width: MySizes.borderWidth, color: MyColors.bordersColor, thickness: MySizes.borderWidth,),
-                Expanded(flex: 2, child: BossListHeader()),
+                Expanded(flex: 2, child: Column(
+                  children: [
+                    BossListHeader(),
+                    BossTile(boss: BossModel(bossTitle: "Boss", bossSubtitle: "asd"))
+                  ],
+                )),
               ],
             ),
           ),

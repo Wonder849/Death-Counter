@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 // Boss information 
 class BossModel {
-  ImageProvider? bossIcon = AssetImage('Img/skull.png');
+  ImageProvider bossIcon = AssetImage('Img/dragon.png');
   
   String bossTitle = "Boss";
   String? bossSubTitle;
@@ -11,7 +11,7 @@ class BossModel {
 
   BossModel({ImageProvider? bossImage, required this.bossTitle, bossSubtitle, int? deaths})
   {
-    bossIcon = bossImage;
+    bossIcon = bossImage ?? AssetImage('Img/dragon.png');
     bossTitle = bossTitle;
     bossSubTitle = bossSubtitle;
     deaths = deaths;
