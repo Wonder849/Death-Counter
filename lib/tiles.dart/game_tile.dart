@@ -39,6 +39,7 @@ class _GameTileState extends State<GameTile> {
               padding: EdgeInsets.only(left: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     widget.game.gameName,
@@ -49,7 +50,7 @@ class _GameTileState extends State<GameTile> {
                   ),
                   Text(
                     widget.game.gameDeaths?.toString() ?? '0',
-                    style: TextStyle(color: MyColors.yellowColor, fontSize: 10),
+                    style: TextStyle(color: isSelected? MyColors.yellowColor : MyColors.whiteColor, fontSize: 10),
                   ),
                 ],
               ),

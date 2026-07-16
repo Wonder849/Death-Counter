@@ -2,7 +2,7 @@ import 'package:death_counter/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:death_counter/styles/sizes.dart';
 
-// TitleBar Button preset
+// Own icon button preset
 class MyIconButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback onPressed;

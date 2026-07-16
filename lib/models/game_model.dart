@@ -12,9 +12,9 @@ class GameModel {
   List<BossModel>? bosses;
 
   GameModel({ImageProvider? gameIcon, required this.gameName,int? gameDeaths,List<BossModel>? bosses}) {
-    gameIcon = gameIcon ?? AssetImage('Img/skull.png');
-    gameName = gameName;
-    gameDeaths = gameDeaths;
-    bosses = bosses;
+    this.gameIcon = gameIcon ?? AssetImage('Img/skull.png');
+    this.gameName = gameName;
+    this.gameDeaths = gameDeaths;
+    this.bosses = bosses;
   }
 }
