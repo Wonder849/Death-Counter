@@ -1,10 +1,11 @@
-import 'package:death_counter/lists/lists_body.dart';
+import 'package:death_counter/lists/lists_appearance/lists_body.dart';
+import 'package:death_counter/lists/lists_controllers/boss_list_controller.dart';
 import 'package:death_counter/models/boss_model.dart';
 import 'package:death_counter/models/game_model.dart';
 import 'package:death_counter/styles/colors.dart';
 import 'package:death_counter/styles/sizes.dart';
-import 'package:death_counter/utils/games_list_controller.dart';
-import 'package:death_counter/lists/lists_headers.dart';
+import 'package:death_counter/lists/lists_controllers/games_list_controller.dart';
+import 'package:death_counter/lists/lists_appearance/lists_headers.dart';
 import 'package:death_counter/utils/title_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -15,9 +16,13 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
   // Creating empty games list
   // that contains all games info
-  final GamesListController _gamesListController = GamesListController([GameModel(gameName: "asd")]);
+  final GamesListController _gamesListController = GamesListController([]);
+
+  // Same as games list but for bosses
+  final BossListController _bossListController = BossListController([]);
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +58,7 @@ class _MainPageState extends State<MainPage> {
                   child: Column(
                     children: [
                       BossListHeader(),
+                      Expanded(child: BossListBody(listNotifier: _bossListController))
                       //BossTile(boss: BossModel(bossTitle: "Boss", bossSubtitle: "asd"))
                     ],
                   ),

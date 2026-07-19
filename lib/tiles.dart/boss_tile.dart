@@ -65,7 +65,7 @@ class _BossTileState extends State<BossTile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.boss.deaths?.toString() ?? '0',
+                widget.boss.bossDeaths?.toString() ?? '0',
                 style: TextStyle(
                   color: isHighestDeaths? MyColors.yellowColor : MyColors.whiteColor,
                   fontSize: 20

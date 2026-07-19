@@ -7,13 +7,13 @@ class BossModel {
   String bossTitle = "Boss";
   String? bossSubTitle;
 
-  int? deaths;
+  int? bossDeaths;
 
   BossModel({ImageProvider? bossImage, required this.bossTitle, bossSubtitle, int? deaths})
   {
-    bossIcon = bossImage ?? AssetImage('Img/dragon.png');
-    bossTitle = bossTitle;
-    bossSubTitle = bossSubtitle;
-    deaths = deaths;
+    this.bossIcon = bossImage ?? AssetImage('Img/dragon.png');
+    this.bossTitle = bossTitle;
+    this.bossSubTitle = bossSubtitle;
+    this.bossDeaths = deaths;
   }
 }

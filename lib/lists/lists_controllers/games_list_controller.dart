@@ -19,7 +19,7 @@ class GamesListController with ChangeNotifier {
   void AddGame({required GameModel game}) {
 
 
-    gamesList?.add(game);
+    gamesList.add(game);
 
     // Used for redrawing widgets
     notifyListeners();
@@ -27,7 +27,7 @@ class GamesListController with ChangeNotifier {
 
   void DeleteGame(int index) {
 
-    gamesList?.removeAt(index);
+    gamesList.removeAt(index);
 
     notifyListeners();
   }
@@ -36,6 +36,7 @@ class GamesListController with ChangeNotifier {
 
     var game = gamesList?.elementAt(gameIndex);
 
+    game?.gameIcon = gameIcon ?? game.gameIcon;
     game?.gameName = gameName;
     game?.gameDeaths = gameDeaths;
     game?.bosses = bosses;

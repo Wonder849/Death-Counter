@@ -1,6 +1,9 @@
+import 'package:death_counter/lists/lists_controllers/boss_list_controller.dart';
+import 'package:death_counter/models/boss_model.dart';
 import 'package:death_counter/models/game_model.dart';
+import 'package:death_counter/tiles.dart/boss_tile.dart';
 import 'package:death_counter/tiles.dart/game_tile.dart';
-import 'package:death_counter/utils/games_list_controller.dart';
+import 'package:death_counter/lists/lists_controllers/games_list_controller.dart';
 import 'package:flutter/material.dart';
 
 // Widget for games list that manages games
@@ -31,7 +34,7 @@ class GamesListBody extends StatelessWidget {
 
 // Works same way that GamesListBody
 class BossListBody extends StatelessWidget {
-  final GamesListController listNotifier;
+  final BossListController listNotifier;
   
   BossListBody({super.key, required this.listNotifier});
 
@@ -42,12 +45,12 @@ class BossListBody extends StatelessWidget {
       builder: (context, child) {
         // Rebuild the ListView each time the list changes,
         // so that the framework knows to update the rendering
-        final List<GameModel> updatedGamesList = listNotifier.gamesList;
+        final List<BossModel> updatedBossList = listNotifier.bossList;
 
         return ListView.builder(
-          itemCount: updatedGamesList.length,
+          itemCount: updatedBossList.length,
           itemBuilder: (context, index) =>
-              GameTile(game: updatedGamesList[index]),
+              BossTile(boss: updatedBossList[index]),
         );
       },
     );
