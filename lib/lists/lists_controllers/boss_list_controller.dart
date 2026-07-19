@@ -33,7 +33,7 @@ class BossListController with ChangeNotifier {
 
   // Method need for swapping current list
   // because of chosen game all list need to be swapped
-  void loadBosses(List<BossModel>? bosses) {
+  void LoadBosses(List<BossModel>? bosses) {
     _bossList = bosses ?? [];
 
     notifyListeners();

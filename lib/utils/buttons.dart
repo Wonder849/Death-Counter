@@ -21,7 +21,7 @@ class MyIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      hoverColor: MyColors.hoverTitleBarColor,
+      hoverColor: MyColors.hoverButtonTilesColor,
       splashColor: Colors.transparent,
       child: Container(
         width: contSize,

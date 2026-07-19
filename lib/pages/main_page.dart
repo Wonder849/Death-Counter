@@ -19,10 +19,17 @@ class _MainPageState extends State<MainPage> {
 
   // Creating empty games list
   // that contains all games info
-  final GamesListController _gamesListController = GamesListController([]);
+  final GamesListController _gamesListController = GamesListController([GameModel(gameName: "asd", bosses: [BossModel(bossTitle: "1"), BossModel(bossTitle: "2")]),GameModel(gameName: "AAAsd", bosses: [BossModel(bossTitle: "3"), BossModel(bossTitle: "4")])]);
 
   // Same as games list but for bosses
   final BossListController _bossListController = BossListController([]);
+
+  // Manages clicking on game tiles and 
+  // updating current displayable boss list
+  void onGameSelected(int index) {
+    _gamesListController.SelectGame(index);
+    _bossListController.LoadBosses(_gamesListController.gamesList[index].bosses);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +50,10 @@ class _MainPageState extends State<MainPage> {
                       // For list knows its hight limits
                       // other way its not working XD
                       Expanded(
-                        child: GamesListBody(listNotifier: _gamesListController),
+                        child: GamesListBody(
+                          listNotifier: _gamesListController,
+                          onGameTap: onGameSelected,
+                          ),
                       )
                     ],
                   ),
@@ -58,8 +68,9 @@ class _MainPageState extends State<MainPage> {
                   child: Column(
                     children: [
                       BossListHeader(),
+                      // For list knows its hight limits
+                      // other way its not working XD
                       Expanded(child: BossListBody(listNotifier: _bossListController))
-                      //BossTile(boss: BossModel(bossTitle: "Boss", bossSubtitle: "asd"))
                     ],
                   ),
                 ),

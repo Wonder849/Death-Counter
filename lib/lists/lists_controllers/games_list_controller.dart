@@ -8,13 +8,24 @@ class GamesListController with ChangeNotifier {
 
   // All games list 
   List<GameModel> _gamesList = [];
+  int _selectedIndex = -1;
 
   GamesListController(List<GameModel> gamesList) {
    _gamesList = gamesList;
   }
 
-  // getter
+  // getters
   List<GameModel> get gamesList => _gamesList;
+  int get selectedIndex => _selectedIndex;
+
+  // Need for select a game for displaying correct 
+  // bosses list tiles
+  void SelectGame(int index) {
+
+    _selectedIndex = index;
+
+    notifyListeners();
+  }
 
   void AddGame({required GameModel game}) {
 
