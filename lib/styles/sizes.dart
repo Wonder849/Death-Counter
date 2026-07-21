@@ -17,4 +17,8 @@ class MySizes
 
   static const double buttonIconContSz = 40;
   static const double buttonIconSz = 20;
+
+  static const double buttonActionWidth = 120;
+  static const double buttonActionHeight = 30;
+  static const double buttonActionBorderRadius = 10;
 }

@@ -17,4 +17,9 @@ class GameModel {
     this.gameDeaths = gameDeaths;
     this.bosses = bosses;
   }
+
+  @override
+  String toString() {
+    return gameName;
+  }
 }
