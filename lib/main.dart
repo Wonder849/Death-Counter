@@ -1,3 +1,4 @@
+import 'package:death_counter/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -31,7 +32,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Death Counter',
-      theme: ThemeData(fontFamily: 'IBMPlexMono'),
+      theme: ThemeData(textTheme: ThemeData.dark().textTheme.apply(
+        bodyColor: MyColors.whiteColor,
+        fontFamily: 'IBMPlexMono'
+      )),
       home: MainPage()
     );
   }

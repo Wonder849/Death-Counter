@@ -26,7 +26,6 @@ class GameListHeader extends StatelessWidget {
       child: Text(
         "GAMES",
         style: TextStyle(
-          color: MyColors.whiteColor,
           fontSize: MySizes.titlesTextSz,
         ),
       ),
@@ -82,7 +81,6 @@ class BossListHeader extends StatelessWidget {
                     Text(
                       bossCount.toString() + (bossCount == 1 ? " boss" : " bosses"),
                       style: TextStyle(
-                        color: MyColors.whiteColor,
                         fontSize: MySizes.subTitlesTextSz,
                       ),
                     ),

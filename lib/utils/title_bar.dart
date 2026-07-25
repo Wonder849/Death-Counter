@@ -11,7 +11,7 @@ class CustomTitleBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 40,
+      height: MySizes.titleBarsHeight,
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(color: MyColors.bordersColor, width: MySizes.borderWidth),

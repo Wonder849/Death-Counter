@@ -1,5 +1,6 @@
 import 'package:death_counter/lists/lists_appearance/lists_body.dart';
 import 'package:death_counter/lists/lists_controllers/boss_list_controller.dart';
+import 'package:death_counter/modal_windows/add_modal.dart';
 import 'package:death_counter/models/boss_model.dart';
 import 'package:death_counter/models/game_model.dart';
 import 'package:death_counter/styles/colors.dart';
@@ -9,6 +10,7 @@ import 'package:death_counter/lists/lists_appearance/lists_headers.dart';
 import 'package:death_counter/utils/buttons.dart';
 import 'package:death_counter/utils/title_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -24,12 +26,27 @@ class _MainPageState extends State<MainPage> {
 
   // Same as games list but for bosses
   final BossListController _bossListController = BossListController([]);
-
+  
   // Manages clicking on game tiles and 
   // updating current displayable boss list
   void onGameSelected(int index) {
     _gamesListController.SelectGame(index);
     _bossListController.LoadBosses(_gamesListController.gamesList[index].bosses);
+  }
+
+  // For adding games to game list
+  // Opens a modal window and waiting for
+  // user to type a game info and send
+  void addGame() async
+  {
+    final newGame = await showDialog<GameModel>(
+      context: context, 
+      builder: (context) { return AddModal(); }
+    );
+
+    if(newGame != null) {
+      _gamesListController.AddGame(game: newGame);
+    }
   }
 
   @override
@@ -56,7 +73,7 @@ class _MainPageState extends State<MainPage> {
                           onGameTap: onGameSelected,
                           ),
                       ),
-                      MyActionButton( icon: Icons.add, iconSize: 18, text: "Add Game", onPressed: () => {})
+                      MyActionButton( icon: Icons.add, iconSize: 18, text: "Add Game", onPressed: () => addGame())
                     ],
                   ),
                 ),

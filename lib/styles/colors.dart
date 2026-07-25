@@ -7,6 +7,8 @@ class MyColors
   static const whiteColor = Color(0xFF9d9d9c);
   static const yellowColor = Color(0xFFB8820A);
   static const almostYellowColor = Color(0xFFA6965F);
-  static const hoverButtonTilesColor = Color.fromARGB(45, 255, 255, 255);
+  static const greyColor = Color.fromARGB(45, 255, 255, 255);
   static const activeTileBg = Color(0xFF17170C);
+  static const modalTextFieldColor = Color(0xFF3C3C39);
+  static const modalIconSelected = Color.fromARGB(80, 255, 255, 255);
 }

@@ -21,7 +21,7 @@ class MyIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      hoverColor: MyColors.hoverButtonTilesColor,
+      hoverColor: MyColors.greyColor,
       splashColor: Colors.transparent,
       child: Container(
         width: contSize,
@@ -34,7 +34,7 @@ class MyIconButton extends StatelessWidget {
 }
 
 class MyActionButton extends StatelessWidget {
-  final IconData icon;
+  final IconData? icon;
   final double iconSize;
   final String text;
   final VoidCallback onPressed;
@@ -42,7 +42,7 @@ class MyActionButton extends StatelessWidget {
   final double height;
   const MyActionButton({
     super.key,
-    required this.icon,
+    this.icon,
     this.iconSize = MySizes.iconsSz,
     required this.text,
     required this.onPressed,
@@ -57,7 +57,7 @@ class MyActionButton extends StatelessWidget {
       borderRadius: BorderRadius.all(
         Radius.circular(MySizes.buttonActionBorderRadius),
       ),
-      hoverColor: MyColors.hoverButtonTilesColor,
+      hoverColor: MyColors.greyColor,
       splashColor: Colors.transparent,
       child: Container(
         width: width,
@@ -72,7 +72,9 @@ class MyActionButton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: MyColors.whiteColor, size: iconSize),
+            if(icon != null) ...[
+              Icon(icon, color: MyColors.whiteColor, size: iconSize),
+            ],
             Text(text, style: TextStyle(color: MyColors.whiteColor)),
           ],
         ),

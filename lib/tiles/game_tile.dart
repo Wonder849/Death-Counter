@@ -15,7 +15,7 @@ class GameTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      hoverColor: MyColors.hoverButtonTilesColor,
+      hoverColor: MyColors.greyColor,
       splashColor: Colors.transparent,
       child: Container(
         height: MySizes.tilesHight,

@@ -2,6 +2,8 @@
 
 class MySizes
 {
+  static const double titleBarsHeight = 40;
+
   static const double textPad20 = 20;
 
   static const double borderWidth = 1;
@@ -21,4 +23,12 @@ class MySizes
   static const double buttonActionWidth = 120;
   static const double buttonActionHeight = 30;
   static const double buttonActionBorderRadius = 10;
+
+  static const double modalTextHeadingsSz = 20;
+  static const double modalContPdd = 20;
+  static const double modalContGap = 10;
+
+  static const double modalIconsGap = 12;
+  static const double modalIconsSize = 30;
+  static const double modalIconsBorderRadius = 10;
 }
