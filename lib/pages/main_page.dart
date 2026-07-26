@@ -1,6 +1,7 @@
 import 'package:death_counter/lists/lists_appearance/lists_body.dart';
 import 'package:death_counter/lists/lists_controllers/boss_list_controller.dart';
-import 'package:death_counter/modal_windows/add_modal.dart';
+import 'package:death_counter/modal_windows/add_boss_modal.dart';
+import 'package:death_counter/modal_windows/add_game_modal.dart';
 import 'package:death_counter/models/boss_model.dart';
 import 'package:death_counter/models/game_model.dart';
 import 'package:death_counter/styles/colors.dart';
@@ -10,7 +11,6 @@ import 'package:death_counter/lists/lists_appearance/lists_headers.dart';
 import 'package:death_counter/utils/buttons.dart';
 import 'package:death_counter/utils/title_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -41,11 +41,26 @@ class _MainPageState extends State<MainPage> {
   {
     final newGame = await showDialog<GameModel>(
       context: context, 
-      builder: (context) { return AddModal(); }
+      builder: (context) { return AddGameModal(); }
     );
 
     if(newGame != null) {
       _gamesListController.AddGame(game: newGame);
+    }
+  }
+
+  void addBoss() async {
+    final newBoss = await showDialog(
+      context: context, 
+      builder: (context) {
+        return AddBossModal(
+          gameName: _gamesListController.gamesList[_gamesListController.selectedIndex].gameName
+        );
+      } 
+    );
+
+    if(newBoss != null) {
+      _bossListController.AddBoss(boss: newBoss);
     }
   }
 
@@ -86,7 +101,7 @@ class _MainPageState extends State<MainPage> {
                   flex: 2,
                   child: Column(
                     children: [
-                      BossListHeader(listNotifier: _gamesListController,),
+                      BossListHeader(listNotifier: _gamesListController,  onButtonClicked: addBoss),
                       // For list knows its hight limits
                       // other way its not working XD
                       Expanded(child: BossListBody(listNotifier: _bossListController))

@@ -36,7 +36,10 @@ class GameListHeader extends StatelessWidget {
 // Header above boses list
 class BossListHeader extends StatelessWidget {
   final GamesListController listNotifier;
-  const BossListHeader({super.key, required this.listNotifier});
+  
+  final VoidCallback onButtonClicked;
+
+  const BossListHeader({super.key, required this.listNotifier, required this.onButtonClicked});
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +96,7 @@ class BossListHeader extends StatelessWidget {
                   icon: Icons.add,
                   iconSize: 18,
                   text: "Add Boss",
-                  onPressed: () => {},
+                  onPressed: onButtonClicked,
                 ),
               ),
             ],

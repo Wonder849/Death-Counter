@@ -4,26 +4,16 @@ import 'package:death_counter/styles/sizes.dart';
 import 'package:death_counter/utils/buttons.dart';
 import 'package:flutter/material.dart';
 
-class AddModal extends StatefulWidget {
-
-  AddModal({super.key});
+class AddGameModal extends StatefulWidget {
+  const AddGameModal({super.key});
 
   @override
-  State<AddModal> createState() => _AddModalState();
+  State<AddGameModal> createState() => _AddGameModalState();
 }
 
-class _AddModalState extends State<AddModal> {
+class _AddGameModalState extends State<AddGameModal> {
   final List<ImageProvider> _iconsList = [
     AssetImage('Img/sword_icon.png'),
-    AssetImage('Img/demon_skull.png'),
-    AssetImage('Img/dragon.png'),
-        AssetImage('Img/sword_icon.png'),
-    AssetImage('Img/demon_skull.png'),
-    AssetImage('Img/dragon.png'),
-        AssetImage('Img/sword_icon.png'),
-    AssetImage('Img/demon_skull.png'),
-    AssetImage('Img/dragon.png'),
-        AssetImage('Img/sword_icon.png'),
     AssetImage('Img/demon_skull.png'),
     AssetImage('Img/dragon.png'),
     

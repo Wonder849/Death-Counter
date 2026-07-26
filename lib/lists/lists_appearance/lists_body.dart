@@ -13,7 +13,7 @@ class GamesListBody extends StatelessWidget {
   final GamesListController listNotifier;
   final void Function(int index) onGameTap;
 
-  GamesListBody({super.key, required this.listNotifier, required this.onGameTap});
+  const GamesListBody({super.key, required this.listNotifier, required this.onGameTap});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class GamesListBody extends StatelessWidget {
 class BossListBody extends StatelessWidget {
   final BossListController listNotifier;
   
-  BossListBody({super.key, required this.listNotifier});
+  const BossListBody({super.key, required this.listNotifier});
 
   @override
   Widget build(BuildContext context) {
