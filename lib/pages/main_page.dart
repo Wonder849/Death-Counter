@@ -22,7 +22,7 @@ class _MainPageState extends State<MainPage> {
 
   // Creating empty games list
   // that contains all games info
-  final GamesListController _gamesListController = GamesListController([GameModel(gameName: "asd", bosses: [BossModel(bossTitle: "1"), BossModel(bossTitle: "2")]),GameModel(gameName: "AAAsd", bosses: [BossModel(bossTitle: "3"), BossModel(bossTitle: "4")])]);
+  final GamesListController _gamesListController = GamesListController([GameModel(gameName: "asd", bosses: [BossModel(bossTitle: "1",isDefeated: false), BossModel(bossTitle: "2",isDefeated: false)]),GameModel(gameName: "AAAsd", bosses: [BossModel(bossTitle: "3",isDefeated: false), BossModel(bossTitle: "4",isDefeated: false)])]);
 
   // Same as games list but for bosses
   final BossListController _bossListController = BossListController([]);

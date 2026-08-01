@@ -39,7 +39,7 @@ class BossListController with ChangeNotifier {
     notifyListeners();
   }
 
-  void ChangeBossInfo({required int bossIndex, ImageProvider? bossIcon, String? bossTitle, String? bossSubTitle, int? bossDeaths}) {
+  void ChangeBossInfo({required int bossIndex, ImageProvider? bossIcon, String? bossTitle, String? bossSubTitle, int? bossDeaths, bool? isDefeated}) {
 
     var boss = bossList?.elementAt(bossIndex);
 
@@ -49,6 +49,8 @@ class BossListController with ChangeNotifier {
     boss?.bossSubTitle = bossSubTitle;
 
     boss?.bossDeaths = bossDeaths;
+
+    boss?.isDefeated = isDefeated ?? boss.isDefeated;
 
     notifyListeners();
   }

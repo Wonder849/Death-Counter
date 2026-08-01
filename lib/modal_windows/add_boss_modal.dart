@@ -26,11 +26,11 @@ class _AddBossModalState extends State<AddBossModal> {
     AssetImage('Img/Plus.png')
   ];
 
-  // Controller to get boss name
   final _titleController = TextEditingController();
-
-  // Controller to get boss subtitle
   final _subTitleController = TextEditingController();
+  final _deathsController = TextEditingController(text: "0");
+
+  bool _isChecked = false;
 
   int? selectedIndex;
   ImageProvider selectedIcon = AssetImage('Img/question_mark.png');
@@ -56,7 +56,6 @@ class _AddBossModalState extends State<AddBossModal> {
       content: Container(
         constraints: BoxConstraints(
           minHeight: MediaQuery.sizeOf(context).height * 0.6,
-          maxHeight: MediaQuery.sizeOf(context).height * 0.8
         ),
         width: MediaQuery.sizeOf(context).width * 0.6,
         decoration: BoxDecoration(
@@ -85,9 +84,10 @@ class _AddBossModalState extends State<AddBossModal> {
             ),
             // Rest of content: text fields, icons...
             Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.only(left: MySizes.modalContPdd, right: MySizes.modalContPdd),
+              flex: 8,
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.all(MySizes.modalContPdd),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -126,7 +126,7 @@ class _AddBossModalState extends State<AddBossModal> {
                       spacing: MySizes.modalContGap,
                       children: [
                         Text(
-                          "Subtitle",
+                          "Subtitle (Optional)",
                           style: TextStyle(
                             fontSize: MySizes.modalTextHeadingsSz,
                           ),
@@ -147,6 +147,76 @@ class _AddBossModalState extends State<AddBossModal> {
                             )
                           ),
                         )
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      spacing: MySizes.modalContGap,
+                      children: [
+                        Text(
+                          "Deaths (Optional)",
+                          style: TextStyle(
+                            fontSize: MySizes.modalTextHeadingsSz,
+                          ),
+                        ),
+                        TextField(
+                          controller: _deathsController,
+                          cursorColor: MyColors.whiteColor,
+                          decoration: InputDecoration(
+                            suffixIcon: Material(
+                              color: Colors.transparent, 
+                              type: MaterialType.circle,
+                              clipBehavior: Clip.antiAlias,
+                              child: MyIconButton( icon: Icons.add, onPressed: () {
+                                int? number = int.tryParse(_deathsController.text);
+                                number ??= 0;
+                                _deathsController.text = (number + 1).toString(); 
+                              }),
+                            ),
+                            filled: true,
+                            fillColor : MyColors.modalTextFieldColor,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.transparent),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.transparent),
+                              borderRadius: BorderRadius.circular(10),
+                            )
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Defeated?",
+                          style: TextStyle(
+                            fontSize: MySizes.modalTextHeadingsSz,
+                          ),
+                        ),
+                        Checkbox(
+                          value: _isChecked, 
+                          checkColor: Colors.transparent,
+                          fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+                            if (states.contains(WidgetState.selected)) {
+                              return MyColors.yellowColor; 
+                            }
+                            return Colors.transparent; 
+                          }),
+                          side: WidgetStateBorderSide.resolveWith((states) {
+                            if (states.contains(WidgetState.selected)) {
+                              return const BorderSide(color: Colors.transparent);
+                            }
+                            return const BorderSide(color: MyColors.greyColor, width: MySizes.borderWidth);
+                          }),
+                          onChanged: (value) {
+                            setState(() {
+                              _isChecked = value ?? false;
+                            });
+                          },
+                        ) 
                       ],
                     ),
                     Column(
@@ -197,7 +267,7 @@ class _AddBossModalState extends State<AddBossModal> {
                     )
                   ],
                 ),
-              )
+              ),
             ),
             // Action buttons
             Expanded(
@@ -216,7 +286,13 @@ class _AddBossModalState extends State<AddBossModal> {
                       MyActionButton(text: "Add Boss", onPressed: () {
                         // To get a boss out of modal window 
                         // right to boss list
-                        BossModel boss = BossModel(bossTitle: _titleController.text, bossSubtitle: _subTitleController.text, bossImage: selectedIcon);
+                        BossModel boss = BossModel(
+                          bossTitle: _titleController.text, 
+                          bossSubtitle: _subTitleController.text, 
+                          bossImage: selectedIcon, 
+                          deaths: int.tryParse(_deathsController.text),
+                          isDefeated: _isChecked
+                        );
                         Navigator.of(context).pop(boss);
                       }),
                       MyActionButton(text: "Cancel", onPressed: () {Navigator.of(context).pop(null);})

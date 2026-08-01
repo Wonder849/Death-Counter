@@ -23,7 +23,6 @@ class GameTile extends StatelessWidget {
           color: isSelected ? MyColors.activeTileBg : Colors.transparent,
           border: Border(
             left: isSelected ? BorderSide(width: 2, color: MyColors.yellowColor) : BorderSide(color: Colors.transparent),
-            bottom: BorderSide(color: MyColors.bordersColor, width: 1),
           ),
         ),
         child: Container(

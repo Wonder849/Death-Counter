@@ -20,22 +20,26 @@ class BossTile extends StatefulWidget {
 class _BossTileState extends State<BossTile> {
   
   bool isSelected = false; // to check if this tile is selected for changing bg
-  bool isHighestDeaths = false; // to change deaths color
+  bool isHighestDeaths = false; // to change deaths color 
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: MySizes.tilesHight,
-      padding: EdgeInsets.only(left: 40),
+      padding: EdgeInsets.only( left:widget.boss.isDefeated? 5 : 40 ),
       decoration: BoxDecoration(
         color: isSelected ? MyColors.activeTileBg : Colors.transparent,
         border: Border(
-          bottom: BorderSide(color: MyColors.bordersColor, width: 1)
         )
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          if(widget.boss.isDefeated) ...[
+            Image(
+             image: AssetImage('Img/defeated_boss.png'),height: MySizes.iconsSz - 15, width: MySizes.iconsSz, fit: BoxFit.contain,color: MyColors.yellowColor, 
+            )
+          ],
           Image(
             image: widget.boss.bossIcon, height: MySizes.iconsSz, width: MySizes.iconsSz, fit: BoxFit.contain
           ),

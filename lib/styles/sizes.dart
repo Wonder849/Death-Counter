@@ -31,4 +31,6 @@ class MySizes
   static const double modalIconsGap = 12;
   static const double modalIconsSize = 30;
   static const double modalIconsBorderRadius = 10;
+
+  static const double footerBarHeight = 70;
 }
