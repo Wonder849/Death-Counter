@@ -54,4 +54,40 @@ class BossListController with ChangeNotifier {
 
     notifyListeners();
   }
+
+  int CountTotalDeaths() {
+
+    int deaths = 0;
+    
+    for(int i = 0; i < bossList.length; ++i) {
+      deaths += bossList[i].bossDeaths ?? 0;
+    }
+
+    return deaths;
+  }
+
+  int FindMaxDeaths() {
+
+    int maxDeaths = 0;
+    
+    for(int i = 0; i < bossList.length; ++i) {
+      if((bossList[i].bossDeaths ?? 0 ) > maxDeaths) {
+        maxDeaths = bossList[i].bossDeaths ?? 0;
+      }
+    }
+
+    return maxDeaths;
+  }
+
+  int FindAverageDeaths() {
+
+    int deaths = 0;
+    
+    for(int i = 0; i < bossList.length; ++i) {
+      deaths += bossList[i].bossDeaths ?? 0;
+    }
+
+    deaths = bossList.isNotEmpty ? (deaths ~/ bossList.length) : 0;
+    return deaths;
+  }
 }

@@ -54,4 +54,23 @@ class GamesListController with ChangeNotifier {
 
     notifyListeners();
   }
+
+  int countAllDeaths() {
+
+    int deaths = 0;
+    
+    for(int i = 0; i < gamesList.length; ++i) {
+      var bosses = gamesList[i].bosses;
+      if(bosses == null) {
+        continue;
+      }
+
+      for(int j = 0; j < bosses.length; ++j) {
+
+        deaths += bosses[j].bossDeaths ?? 0;
+      }
+    }
+
+    return deaths;
+  }
 }

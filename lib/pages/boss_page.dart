@@ -27,7 +27,7 @@ class _BossPageState extends State<BossPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                
+                IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.chevron_left, color: Colors.white,)),
               ],
             ),
           ),

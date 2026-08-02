@@ -32,5 +32,7 @@ class MySizes
   static const double modalIconsSize = 30;
   static const double modalIconsBorderRadius = 10;
 
-  static const double footerBarHeight = 70;
+  static const double footerBarHeight = 50;
+  static const double footerBarBossTextSz = 15;
+  static const double footerBarBossSpacers = 80;
 }

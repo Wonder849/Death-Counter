@@ -9,6 +9,7 @@ import 'package:death_counter/styles/sizes.dart';
 import 'package:death_counter/lists/lists_controllers/games_list_controller.dart';
 import 'package:death_counter/lists/lists_appearance/lists_headers.dart';
 import 'package:death_counter/utils/buttons.dart';
+import 'package:death_counter/utils/footer_bar.dart';
 import 'package:death_counter/utils/title_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -88,7 +89,8 @@ class _MainPageState extends State<MainPage> {
                           onGameTap: onGameSelected,
                           ),
                       ),
-                      MyActionButton( icon: Icons.add, iconSize: 18, text: "Add Game", onPressed: () => addGame())
+                      MyActionButton( icon: Icons.add, iconSize: 18, text: "Add Game", onPressed: () => addGame()),
+                      CustomFooterBarGamesPart(gamesListNotifier: _gamesListController, bossListNotifier: _bossListController)
                     ],
                   ),
                 ),
@@ -104,7 +106,8 @@ class _MainPageState extends State<MainPage> {
                       BossListHeader(listNotifier: _gamesListController,  onButtonClicked: addBoss),
                       // For list knows its hight limits
                       // other way its not working XD
-                      Expanded(child: BossListBody(listNotifier: _bossListController))
+                      Expanded(child: BossListBody(listNotifier: _bossListController)),
+                      CustomFooterBarBossPart(gamesListNotifier: _gamesListController, bossListNotifier: _bossListController)
                     ],
                   ),
                 ),
