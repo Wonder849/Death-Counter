@@ -43,14 +43,14 @@ class GamesListController with ChangeNotifier {
     notifyListeners();
   }
 
-  void ChangeGameInfo(int gameIndex, ImageProvider? gameIcon, String gameName, int? gameDeaths, List<BossModel>? bosses) {
+  void ChangeGameInfo({required int gameIndex, ImageProvider? gameIcon, String? gameName, int? gameDeaths, List<BossModel>? bosses}) {
 
     var game = gamesList?.elementAt(gameIndex);
 
     game?.gameIcon = gameIcon ?? game.gameIcon;
-    game?.gameName = gameName;
-    game?.gameDeaths = gameDeaths;
-    game?.bosses = bosses;
+    game?.gameName = gameName ?? game.gameName;
+    game?.gameDeaths = gameDeaths ?? game.gameDeaths;
+    game?.bosses = bosses ?? game.bosses;
 
     notifyListeners();
   }

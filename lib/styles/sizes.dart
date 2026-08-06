@@ -35,4 +35,14 @@ class MySizes
   static const double footerBarHeight = 50;
   static const double footerBarBossTextSz = 15;
   static const double footerBarBossSpacers = 80;
+
+  static const double bossPageContentPdd = 10;
+
+  static const double bossPageTitleTextSz = 25;
+  static const double bossPageDeathsTextSz = 35;
+
+  static const double bossPageIconSz = 45;
+  static const double bossPageDeathsWidth = 150;
+
+  static const double bossPageAddBtnSz = 120;
 }

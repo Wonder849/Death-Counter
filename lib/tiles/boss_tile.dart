@@ -1,9 +1,11 @@
+import 'package:death_counter/lists/lists_controllers/boss_list_controller.dart';
 import 'package:death_counter/models/boss_model.dart';
 import 'package:death_counter/pages/boss_page.dart';
 import 'package:death_counter/utils/buttons.dart';
 import 'package:death_counter/styles/colors.dart';
 import 'package:death_counter/styles/sizes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // Widget that contains boss info 
 // also contains button to interactive page
@@ -19,9 +21,16 @@ class BossTile extends StatefulWidget {
 }
 
 class _BossTileState extends State<BossTile> {
-  
-  bool isSelected = false; // to check if this tile is selected for changing bg
-  bool isHighestDeaths = false; // to change deaths color 
+  // To check if this tile is selected 
+  //for changing bg// to change deaths color 
+  bool isHighestDeaths() {
+    BossListController bossListController = context.read<BossListController>();
+
+    int highestDeathsIndex = bossListController.FindMaxDeathsIndex();
+    int currentBossIndex = bossListController.bossList.indexOf(widget.boss);
+
+    return (currentBossIndex == highestDeathsIndex);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +62,6 @@ class _BossTileState extends State<BossTile> {
         height: MySizes.tilesHight,
         padding: EdgeInsets.only( left:widget.boss.isDefeated? 10 : 40 ),
         decoration: BoxDecoration(
-          color: isSelected ? MyColors.activeTileBg : Colors.transparent,
           border: Border(
           )
         ),
@@ -82,13 +90,13 @@ class _BossTileState extends State<BossTile> {
                   Text(
                     widget.boss.bossTitle,
                     style: TextStyle(
-                      color: isSelected? MyColors.almostYellowColor : MyColors.whiteColor,
+                      color: isHighestDeaths()? MyColors.almostYellowColor : MyColors.whiteColor,
                       fontSize: MySizes.tilesTextSz,
                     ),
                   ),
                   Text(
                     widget.boss.bossSubTitle?.toString() ?? '',
-                    style: TextStyle(color: isSelected? MyColors.yellowColor : MyColors.whiteColor, fontSize: 10),
+                    style: TextStyle(color: MyColors.whiteColor, fontSize: 10),
                   ),
                 ],
               ),
@@ -96,15 +104,16 @@ class _BossTileState extends State<BossTile> {
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 5,
               children: [
                 Text(
                   widget.boss.bossDeaths?.toString() ?? '0',
                   style: TextStyle(
-                    color: isHighestDeaths? MyColors.yellowColor : MyColors.whiteColor,
+                    color: isHighestDeaths()? MyColors.yellowColor : MyColors.whiteColor,
                     fontSize: 20
                   ),
                 ),
-                MyIconButton(icon: Icons.chevron_right, onPressed: () => {}, contSize: 30, iconSize: 20)
+                MyIconButton(icon: Icons.chevron_right, borderRadius: true, onPressed: () => {}, contSize: 30, iconSize: 20)
               ],
             )
           ],

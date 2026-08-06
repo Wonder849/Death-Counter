@@ -62,6 +62,18 @@ class CustomFooterBarBossPart extends StatelessWidget {
     required this.bossListNotifier,
   });
 
+  String findMaxDeaths() {
+    int maxDeathsIndex = bossListNotifier.FindMaxDeathsIndex();
+    if(maxDeathsIndex != -1) {
+      int? deaths = bossListNotifier.bossList[maxDeathsIndex].bossDeaths;
+      if(deaths != null) {
+        return deaths.toString();
+      }
+    }
+
+    return "0";
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
@@ -101,7 +113,7 @@ class CustomFooterBarBossPart extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    bossListNotifier.FindMaxDeaths().toString(),
+                    findMaxDeaths(),
                     style: TextStyle(
                       color: MyColors.yellowColor,
                       fontSize: MySizes.footerBarBossTextSz

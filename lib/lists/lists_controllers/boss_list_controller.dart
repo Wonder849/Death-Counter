@@ -46,10 +46,9 @@ class BossListController with ChangeNotifier {
     boss?.bossIcon = bossIcon ?? boss.bossIcon;
 
     boss?.bossTitle = bossTitle ?? boss.bossTitle;
-    boss?.bossSubTitle = bossSubTitle;
+    boss?.bossSubTitle = bossSubTitle ?? boss.bossSubTitle;
 
-    boss?.bossDeaths = bossDeaths;
-
+    boss?.bossDeaths = bossDeaths ?? boss.bossDeaths;
     boss?.isDefeated = isDefeated ?? boss.isDefeated;
 
     notifyListeners();
@@ -66,17 +65,19 @@ class BossListController with ChangeNotifier {
     return deaths;
   }
 
-  int FindMaxDeaths() {
+  int FindMaxDeathsIndex() {
 
     int maxDeaths = 0;
+    int maxDeathIndex = -1;
     
     for(int i = 0; i < bossList.length; ++i) {
       if((bossList[i].bossDeaths ?? 0 ) > maxDeaths) {
         maxDeaths = bossList[i].bossDeaths ?? 0;
+        maxDeathIndex = i;
       }
     }
 
-    return maxDeaths;
+    return maxDeathIndex;
   }
 
   int FindAverageDeaths() {

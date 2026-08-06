@@ -1,6 +1,11 @@
+import 'package:death_counter/lists/lists_controllers/boss_list_controller.dart';
+import 'package:death_counter/lists/lists_controllers/games_list_controller.dart';
+import 'package:death_counter/models/boss_model.dart';
+import 'package:death_counter/models/game_model.dart';
 import 'package:death_counter/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:provider/provider.dart';
 
 import 'pages/main_page.dart';
 
@@ -21,7 +26,15 @@ void main() async {
     await windowManager.focus();
   });
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => GamesListController([GameModel(gameName: "asd", bosses: [BossModel(bossTitle: "1",isDefeated: false, deaths: 2), BossModel(bossTitle: "2",isDefeated: false)]),GameModel(gameName: "AAAsd", bosses: [BossModel(bossTitle: "3",isDefeated: false), BossModel(bossTitle: "4",isDefeated: false)])])),
+        ChangeNotifierProvider(create: (context) => BossListController([]))
+      ],
+      child: MyApp(),
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {

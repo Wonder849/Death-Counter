@@ -93,8 +93,11 @@ class BossListHeader extends StatelessWidget {
               Container(
                 padding: EdgeInsets.only(right: 10),
                 child: MyActionButton(
-                  icon: Icons.add,
-                  iconSize: 18,
+                  icon: Icon(
+                    Icons.add,
+                    size: 18,
+                    color: MyColors.whiteColor,
+                  ),
                   text: "Add Boss",
                   onPressed: onButtonClicked,
                 ),

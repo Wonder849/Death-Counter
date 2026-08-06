@@ -10,7 +10,9 @@ class AddBossModal extends StatefulWidget {
   // title of modal window
   final String gameName;
 
-  const AddBossModal({super.key, required this.gameName});
+  BossModel? boss;
+
+  AddBossModal({super.key, required this.gameName, this.boss});
 
   @override
   State<AddBossModal> createState() => _AddBossModalState();
@@ -26,14 +28,37 @@ class _AddBossModalState extends State<AddBossModal> {
     AssetImage('Img/Plus.png')
   ];
 
-  final _titleController = TextEditingController();
-  final _subTitleController = TextEditingController();
-  final _deathsController = TextEditingController(text: "0");
+  late bool isBossEdit;
+  
+  late final _titleController = isBossEdit? TextEditingController(text: widget.boss?.bossTitle ?? ""): TextEditingController();
+  late final _subTitleController = isBossEdit? TextEditingController(text: widget.boss?.bossSubTitle ?? ""): TextEditingController();
+  late final _deathsController = isBossEdit? TextEditingController(text: (widget.boss?.bossDeaths != null)? (widget.boss?.bossDeaths.toString()) : ""): TextEditingController();
 
-  bool _isChecked = false;
+  late bool _isChecked = isBossEdit? widget.boss?.isDefeated ?? false : false; 
 
+  ImageProvider selectedIcon = AssetImage("Img/question_mark.png");
   int? selectedIndex;
-  ImageProvider selectedIcon = AssetImage('Img/question_mark.png');
+
+  // Need to select icon that was selected previously
+  // for editing boss
+  @override
+  void initState() {
+    super.initState();
+    isBossEdit = (widget.boss != null);
+
+    if (isBossEdit && widget.boss?.bossIcon != null) {
+      final bossIcon = widget.boss!.bossIcon;
+
+      selectedIndex = _iconsList.indexWhere((icon) => icon == bossIcon);
+
+      if (selectedIndex != -1) {
+        selectedIcon = _iconsList[selectedIndex!];
+      } else {
+        selectedIndex = null;
+        selectedIcon = bossIcon;
+      }
+    }
+  }
 
   void selectIcon(int index)
   {
@@ -50,7 +75,7 @@ class _AddBossModalState extends State<AddBossModal> {
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         side: BorderSide(color: MyColors.greyColor, width: MySizes.borderWidth), 
-        borderRadius: BorderRadiusGeometry.circular(10)
+        borderRadius: BorderRadius.circular(10)
       ),
       backgroundColor: MyColors.mainDarkColor,
       content: Container(
@@ -59,7 +84,7 @@ class _AddBossModalState extends State<AddBossModal> {
         ),
         width: MediaQuery.sizeOf(context).width * 0.6,
         decoration: BoxDecoration(
-          borderRadius: BorderRadiusGeometry.circular(10),
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
           children: [
@@ -71,7 +96,7 @@ class _AddBossModalState extends State<AddBossModal> {
               child: Stack(
                 alignment: Alignment.center,
                   children: [
-                    Text("Add Boss" + " • " + widget.gameName, style: TextStyle(fontSize: MySizes.modalTextHeadingsSz),),
+                    Text( (isBossEdit? "Edit Boss" : "Add Boss") + " • " + widget.gameName, style: TextStyle(fontSize: MySizes.modalTextHeadingsSz),),
                     Positioned(
                       right: 0,
                       child: MyIconButton(
@@ -236,7 +261,7 @@ class _AddBossModalState extends State<AddBossModal> {
                           // Need to select icon
                           final int index = entry.key;
                           final ImageProvider iconAsset = entry.value;
-                          final bool isSelected = selectedIndex == index;
+                          final bool isSelected = (selectedIndex == index);
 
                           return InkWell(
                             onTap: () => selectIcon(index),
@@ -283,7 +308,7 @@ class _AddBossModalState extends State<AddBossModal> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     spacing: 10,
                     children: [
-                      MyActionButton(text: "Add Boss", onPressed: () {
+                      MyActionButton(text: (isBossEdit? "Edit Boss" : "Add Boss"), onPressed: () {
                         // To get a boss out of modal window 
                         // right to boss list
                         BossModel boss = BossModel(

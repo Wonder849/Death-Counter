@@ -8,6 +8,7 @@ class MyIconButton extends StatelessWidget {
   final VoidCallback onPressed;
   final double contSize;
   final double iconSize;
+  final bool borderRadius;
 
   const MyIconButton({
     super.key,
@@ -15,6 +16,7 @@ class MyIconButton extends StatelessWidget {
     required this.onPressed,
     this.contSize = MySizes.buttonIconContSz,
     this.iconSize = MySizes.buttonIconSz,
+    this.borderRadius = false,
   });
 
   @override
@@ -23,6 +25,7 @@ class MyIconButton extends StatelessWidget {
       onTap: onPressed,
       hoverColor: MyColors.greyColor,
       splashColor: Colors.transparent,
+      borderRadius: BorderRadius.circular(borderRadius? 50 : 0),
       child: Container(
         width: contSize,
         height: contSize,
@@ -34,8 +37,7 @@ class MyIconButton extends StatelessWidget {
 }
 
 class MyActionButton extends StatelessWidget {
-  final IconData? icon;
-  final double iconSize;
+  final Widget? icon;
   final String text;
   final VoidCallback onPressed;
   final double width;
@@ -43,8 +45,7 @@ class MyActionButton extends StatelessWidget {
   const MyActionButton({
     super.key,
     this.icon,
-    this.iconSize = MySizes.iconsSz,
-    required this.text,
+    this.text = "",
     required this.onPressed,
     this.width = MySizes.buttonActionWidth,
     this.height = MySizes.buttonActionHeight,
@@ -73,9 +74,14 @@ class MyActionButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if(icon != null) ...[
-              Icon(icon, color: MyColors.whiteColor, size: iconSize),
+              icon!,
+              if (text.isNotEmpty) ...[
+                SizedBox(width: 8), 
+              ]
             ],
-            Text(text, style: TextStyle(color: MyColors.whiteColor)),
+            if(text.isNotEmpty) ...[
+              Text(text, style: TextStyle(color: MyColors.whiteColor)),
+            ]
           ],
         ),
       ),
