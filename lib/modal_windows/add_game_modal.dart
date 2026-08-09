@@ -5,7 +5,10 @@ import 'package:death_counter/utils/buttons.dart';
 import 'package:flutter/material.dart';
 
 class AddGameModal extends StatefulWidget {
-  const AddGameModal({super.key});
+
+  final GameModel? game;
+
+  const AddGameModal({super.key, this.game});
 
   @override
   State<AddGameModal> createState() => _AddGameModalState();
@@ -20,11 +23,38 @@ class _AddGameModalState extends State<AddGameModal> {
     AssetImage('Img/Plus.png')
   ];
 
-  // Controller to get a game title
-  final _controller = TextEditingController();
+  late bool isGameEdit;
 
-  int? selectedIndex;
+  // Controller to get a game title
+  late final _controller = isGameEdit? TextEditingController(text: widget.game?.gameName ?? ""): TextEditingController();
+
   ImageProvider selectedIcon = AssetImage('Img/question_mark.png');
+  int? selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    isGameEdit = (widget.game != null);
+
+    if (isGameEdit && widget.game?.gameIcon != null) {
+      final gameIcon = widget.game!.gameIcon;
+
+      selectedIndex = _iconsList.indexWhere((icon) => icon == gameIcon);
+
+      if (selectedIndex != -1) {
+        selectedIcon = _iconsList[selectedIndex!];
+      } else {
+        selectedIndex = null;
+        selectedIcon = gameIcon;
+      }
+    }
+  }
+
+    @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   void selectIcon(int index)
   {
@@ -63,7 +93,7 @@ class _AddGameModalState extends State<AddGameModal> {
               child: Stack(
                 alignment: Alignment.center,
                   children: [
-                    Text("Add Game", style: TextStyle(fontSize: MySizes.modalTextHeadingsSz),),
+                    Text(isGameEdit? "Edit Game" : "Add Game", style: TextStyle(fontSize: MySizes.modalTextHeadingsSz),),
                     Positioned(
                       right: 0,
                       child: MyIconButton(
@@ -179,7 +209,7 @@ class _AddGameModalState extends State<AddGameModal> {
                       MyActionButton(text: "Add Game", onPressed: () {
                         // To get a game out of modal window 
                         // right to games list
-                        GameModel game = GameModel(gameIcon: selectedIcon, gameName: _controller.text);
+                        GameModel game = GameModel(gameIcon: selectedIcon, gameName: _controller.text, bosses: []);
                         Navigator.of(context).pop(game);
                       }),
                       MyActionButton(text: "Cancel", onPressed: () {Navigator.of(context).pop(null);})

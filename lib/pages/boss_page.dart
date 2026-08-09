@@ -63,7 +63,7 @@ class _BossPageState extends State<BossPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  currentBoss.bossTitle,
+                                  currentBoss.bossTitle.isNotEmpty? currentBoss.bossTitle : "Uknown",
                                   style: TextStyle(
                                     color: MyColors.almostYellowColor,
                                     fontSize: MySizes.bossPageTitleTextSz,
@@ -189,7 +189,7 @@ class _BossPageState extends State<BossPage> {
                                     color: MyColors.whiteColor,
                                   ), 
                                   onPressed: () async {
-                                    bool? agree =  await showDialog(
+                                    bool? answer =  await showDialog(
                                       context: context, 
                                       builder: (context) { return InformModal(
                                         message: "Are you sure you want to reset deaths?",
@@ -198,7 +198,7 @@ class _BossPageState extends State<BossPage> {
                                       );} 
                                     );
 
-                                    if(agree != null && agree == true) {
+                                    if(answer != null && answer == true) {
                                       bossListController.ChangeBossInfo(
                                         bossIndex: bossListController.bossList.indexOf(currentBoss),
                                         bossDeaths: 0

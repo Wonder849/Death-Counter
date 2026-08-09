@@ -75,7 +75,8 @@ class BossListHeader extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      selectedIndex == -1 ? "Game" : updatedGamesList[selectedIndex].gameName,
+                      selectedIndex == -1 ? "Game" : updatedGamesList[selectedIndex].gameName.isNotEmpty?
+                      updatedGamesList[selectedIndex].gameName : "Uknown" ,
                       style: TextStyle(
                         color: MyColors.almostYellowColor,
                         fontSize: MySizes.titlesTextSz,

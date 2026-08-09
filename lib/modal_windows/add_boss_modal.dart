@@ -3,6 +3,7 @@ import 'package:death_counter/styles/colors.dart';
 import 'package:death_counter/styles/sizes.dart';
 import 'package:death_counter/utils/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AddBossModal extends StatefulWidget {
 
@@ -10,9 +11,9 @@ class AddBossModal extends StatefulWidget {
   // title of modal window
   final String gameName;
 
-  BossModel? boss;
+  final BossModel? boss;
 
-  AddBossModal({super.key, required this.gameName, this.boss});
+  const AddBossModal({super.key, required this.gameName, this.boss});
 
   @override
   State<AddBossModal> createState() => _AddBossModalState();
@@ -60,6 +61,14 @@ class _AddBossModalState extends State<AddBossModal> {
     }
   }
 
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _subTitleController.dispose();
+    _deathsController.dispose();
+    super.dispose();
+  }
+
   void selectIcon(int index)
   {
     setState(() {
@@ -96,7 +105,10 @@ class _AddBossModalState extends State<AddBossModal> {
               child: Stack(
                 alignment: Alignment.center,
                   children: [
-                    Text( (isBossEdit? "Edit Boss" : "Add Boss") + " • " + widget.gameName, style: TextStyle(fontSize: MySizes.modalTextHeadingsSz),),
+                    Text( 
+                      "${isBossEdit? "Edit Boss" : "Add Boss"} • ${widget.gameName.isNotEmpty? widget.gameName : "Uknown"}", 
+                      style: TextStyle(fontSize: MySizes.modalTextHeadingsSz),
+                    ),
                     Positioned(
                       right: 0,
                       child: MyIconButton(
@@ -185,6 +197,9 @@ class _AddBossModalState extends State<AddBossModal> {
                           ),
                         ),
                         TextField(
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly, // Blocks all letter inputs completely
+                          ],
                           controller: _deathsController,
                           cursorColor: MyColors.whiteColor,
                           decoration: InputDecoration(

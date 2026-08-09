@@ -21,7 +21,7 @@ class MySizes
   static const double buttonIconSz = 20;
 
   static const double buttonActionWidth = 120;
-  static const double buttonActionHeight = 30;
+  static const double buttonActionHeight = 35;
   static const double buttonActionBorderRadius = 10;
 
   static const double modalTextHeadingsSz = 20;
@@ -45,4 +45,7 @@ class MySizes
   static const double bossPageDeathsWidth = 150;
 
   static const double bossPageAddBtnSz = 120;
+
+  static const double authPageTitleTextSz = 28;
+  static const double authPageSubTitleTextSz = 20;
 }

@@ -2,6 +2,7 @@ import 'package:death_counter/lists/lists_controllers/boss_list_controller.dart'
 import 'package:death_counter/lists/lists_controllers/games_list_controller.dart';
 import 'package:death_counter/models/boss_model.dart';
 import 'package:death_counter/models/game_model.dart';
+import 'package:death_counter/pages/auth_page.dart';
 import 'package:death_counter/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
@@ -48,8 +49,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(textTheme: ThemeData.dark().textTheme.apply(
         bodyColor: MyColors.whiteColor,
         fontFamily: 'IBMPlexMono'
-      )),
-      home: MainPage()
+      ),
+      hoverColor: MyColors.greyColor,
+      splashColor: Colors.transparent,
+    ),
+      
+      home: AuthPage()
     );
   }
 }

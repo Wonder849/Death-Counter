@@ -42,6 +42,8 @@ class MyActionButton extends StatelessWidget {
   final VoidCallback onPressed;
   final double width;
   final double height;
+  final double fontSize;
+
   const MyActionButton({
     super.key,
     this.icon,
@@ -49,6 +51,7 @@ class MyActionButton extends StatelessWidget {
     required this.onPressed,
     this.width = MySizes.buttonActionWidth,
     this.height = MySizes.buttonActionHeight,
+    this.fontSize = 14
   });
 
   @override
@@ -80,7 +83,7 @@ class MyActionButton extends StatelessWidget {
               ]
             ],
             if(text.isNotEmpty) ...[
-              Text(text, style: TextStyle(color: MyColors.whiteColor)),
+              Text(text, style: TextStyle(color: MyColors.whiteColor, fontSize: fontSize )),
             ]
           ],
         ),

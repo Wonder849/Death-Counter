@@ -34,8 +34,7 @@ class _MainPageState extends State<MainPage> {
   // For adding games to game list
   // Opens a modal window and waiting for
   // user to type a game info and send
-  void addGame() async
-  {
+  void addGame() async {
     final newGame = await showDialog<GameModel>(
       context: context, 
       builder: (context) { return AddGameModal(); }
@@ -55,7 +54,10 @@ class _MainPageState extends State<MainPage> {
       context: context, 
       builder: (context) {
         if(gamesListController.selectedIndex == -1) {
-          return InformModal(message: "",);
+          return InformModal(
+            title: "Add Boss",
+            message: "Please select the game for which you want to add a Boss to",
+          );
         }
         else {
           return AddBossModal(
@@ -99,7 +101,10 @@ class _MainPageState extends State<MainPage> {
                           onGameTap: onGameSelected,
                           ),
                       ),
-                      MyActionButton(icon: Icon(Icons.add, size: 18, color: MyColors.whiteColor,), text: "Add Game", onPressed: () => addGame()),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: MyActionButton(icon: Icon(Icons.add, size: 18, color: MyColors.whiteColor,), text: "Add Game", onPressed: () => addGame()),
+                      ),
                       CustomFooterBarGamesPart(gamesListNotifier: gamesListController, bossListNotifier: bossListController)
                     ],
                   ),

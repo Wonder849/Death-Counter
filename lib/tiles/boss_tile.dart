@@ -47,7 +47,6 @@ class _BossTileState extends State<BossTile> {
                   begin: const Offset(1.0, 0.0), 
                   end: Offset.zero,  
                 ).chain(CurveTween(curve: Curves.easeOutCubic));
-
                 return SlideTransition(
                   position: animation.drive(tween),
                   child: child,
@@ -88,7 +87,7 @@ class _BossTileState extends State<BossTile> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    widget.boss.bossTitle,
+                    widget.boss.bossTitle.isNotEmpty? widget.boss.bossTitle : "Uknown",
                     style: TextStyle(
                       color: isHighestDeaths()? MyColors.almostYellowColor : MyColors.whiteColor,
                       fontSize: MySizes.tilesTextSz,
@@ -102,19 +101,22 @@ class _BossTileState extends State<BossTile> {
               ),
               ),
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 5,
-              children: [
-                Text(
-                  widget.boss.bossDeaths?.toString() ?? '0',
-                  style: TextStyle(
-                    color: isHighestDeaths()? MyColors.yellowColor : MyColors.whiteColor,
-                    fontSize: 20
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 5,
+                children: [
+                  Text(
+                    widget.boss.bossDeaths?.toString() ?? '0',
+                    style: TextStyle(
+                      color: isHighestDeaths()? MyColors.yellowColor : MyColors.whiteColor,
+                      fontSize: 20
+                    ),
                   ),
-                ),
-                MyIconButton(icon: Icons.chevron_right, borderRadius: true, onPressed: () => {}, contSize: 30, iconSize: 20)
-              ],
+                  MyIconButton(icon: Icons.chevron_right, borderRadius: true, onPressed: () => {}, contSize: 30, iconSize: 20)
+                ],
+              ),
             )
           ],
         ),
