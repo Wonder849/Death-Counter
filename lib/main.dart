@@ -1,14 +1,15 @@
+import 'package:death_counter/firebase_options.dart';
 import 'package:death_counter/lists/lists_controllers/boss_list_controller.dart';
 import 'package:death_counter/lists/lists_controllers/games_list_controller.dart';
 import 'package:death_counter/models/boss_model.dart';
 import 'package:death_counter/models/game_model.dart';
-import 'package:death_counter/pages/auth_page.dart';
 import 'package:death_counter/styles/colors.dart';
+import 'package:death_counter/utils/auth_gate.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:provider/provider.dart';
-
-import 'pages/main_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,9 +17,9 @@ void main() async {
 
   WindowOptions windowOptions = const WindowOptions(
     titleBarStyle: TitleBarStyle.hidden, // Hide classic title bar
-    size: Size(800, 600),
-    minimumSize: Size(800, 600),
-    maximumSize: Size(1200, 800),
+    size: Size(900, 800),
+    minimumSize: Size(900, 750),
+    maximumSize: Size(1360, 1280),
     center: true
   );
 
@@ -26,6 +27,13 @@ void main() async {
     await windowManager.show();
     await windowManager.focus();
   });
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
+
+  // Pass all uncaught errors to Crashlytics
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
   runApp(
     MultiProvider(
@@ -53,8 +61,7 @@ class MyApp extends StatelessWidget {
       hoverColor: MyColors.greyColor,
       splashColor: Colors.transparent,
     ),
-      
-      home: AuthPage()
+      home: AuthGate()
     );
   }
 }

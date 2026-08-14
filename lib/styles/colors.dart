@@ -13,4 +13,5 @@ class MyColors
   static const modalTextFieldColor = Color(0xFF3C3C39);
   static const modalIconSelected = Color.fromARGB(80, 255, 255, 255);
   static const defeatedBossColor = Color(0xFFB8820A);
+  static const errorColor = Color(0xFF541A18);
 }
