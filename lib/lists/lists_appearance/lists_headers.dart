@@ -1,4 +1,3 @@
-import 'package:death_counter/lists/lists_controllers/games_list_controller.dart';
 import 'package:death_counter/models/game_model.dart';
 import 'package:death_counter/styles/colors.dart';
 import 'package:death_counter/utils/buttons.dart';
@@ -35,78 +34,63 @@ class GameListHeader extends StatelessWidget {
 
 // Header above boses list
 class BossListHeader extends StatelessWidget {
-  final GamesListController listNotifier;
-  
+
+  final GameModel? selectedGame;
+  final int bossCount;
   final VoidCallback onButtonClicked;
 
-  const BossListHeader({super.key, required this.listNotifier, required this.onButtonClicked});
+  const BossListHeader({
+    super.key,
+    required this.selectedGame,
+    required this.bossCount,
+    required this.onButtonClicked,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: listNotifier,
-      builder: (context, child) {
-         final List<GameModel> updatedGamesList = listNotifier.gamesList;
-         final int selectedIndex = listNotifier.selectedIndex;
-         final int bossCount;
-         if(selectedIndex == -1) {
-          bossCount = 0;
-         }
-         else {
-          bossCount = updatedGamesList[selectedIndex].bosses?.length ?? 0;
-         }
-         
-        return Container(
-          height: MySizes.headersHeight,
-          padding: EdgeInsets.only(left: MySizes.textPad20),
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                width: MySizes.borderWidth,
-                color: MyColors.bordersColor,
-              ),
+    return Container(
+      height: MySizes.headersHeight,
+      padding: EdgeInsets.only(left: MySizes.textPad20),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            width: MySizes.borderWidth,
+            color: MyColors.bordersColor,
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  (selectedGame == null) ? "Game" : (selectedGame!.gameName.isNotEmpty? 
+                  selectedGame!.gameName : "Uknown"),
+                  style: TextStyle(
+                    color: MyColors.almostYellowColor,
+                    fontSize: MySizes.titlesTextSz,
+                  ),
+                ),
+                Text(
+                  bossCount.toString() + (bossCount == 1 ? " boss" : " bosses"),
+                  style: TextStyle(fontSize: MySizes.subTitlesTextSz),
+                ),
+              ],
             ),
           ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      selectedIndex == -1 ? "Game" : updatedGamesList[selectedIndex].gameName.isNotEmpty?
-                      updatedGamesList[selectedIndex].gameName : "Uknown" ,
-                      style: TextStyle(
-                        color: MyColors.almostYellowColor,
-                        fontSize: MySizes.titlesTextSz,
-                      ),
-                    ),
-                    Text(
-                      bossCount.toString() + (bossCount == 1 ? " boss" : " bosses"),
-                      style: TextStyle(
-                        fontSize: MySizes.subTitlesTextSz,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(right: 10),
-                child: MyActionButton(
-                  icon: Icon(
-                    Icons.add,
-                    size: 18,
-                    color: MyColors.whiteColor,
-                  ),
-                  text: "Add Boss",
-                  onPressed: onButtonClicked,
-                ),
-              ),
-            ],
+          Container(
+            padding: EdgeInsets.only(right: 10),
+            child: MyActionButton(
+              icon: Icon(Icons.add, size: 18, color: MyColors.whiteColor),
+              text: "Add Boss",
+              onPressed: onButtonClicked,
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }

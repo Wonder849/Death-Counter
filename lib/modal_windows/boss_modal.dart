@@ -1,3 +1,4 @@
+import 'package:death_counter/modal_windows/inform_modal.dart';
 import 'package:death_counter/models/boss_model.dart';
 import 'package:death_counter/styles/colors.dart';
 import 'package:death_counter/styles/sizes.dart';
@@ -5,7 +6,7 @@ import 'package:death_counter/utils/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class AddBossModal extends StatefulWidget {
+class BossModal extends StatefulWidget {
 
   // Need to display name of game in 
   // title of modal window
@@ -13,20 +14,20 @@ class AddBossModal extends StatefulWidget {
 
   final BossModel? boss;
 
-  const AddBossModal({super.key, required this.gameName, this.boss});
+  const BossModal({super.key, required this.gameName, this.boss});
 
   @override
-  State<AddBossModal> createState() => _AddBossModalState();
+  State<BossModal> createState() => _BossModalState();
 }
 
-class _AddBossModalState extends State<AddBossModal> {
+class _BossModalState extends State<BossModal> {
 
-    final List<ImageProvider> _iconsList = [
-    AssetImage('Img/sword_icon.png'),
-    AssetImage('Img/demon_skull.png'),
-    AssetImage('Img/dragon.png'),
+    final List<String> _iconsList = [
+    'Img/sword_icon.png',
+    'Img/demon_skull.png',
+    'Img/dragon.png',
     
-    AssetImage('Img/Plus.png')
+    'Img/Plus.png'
   ];
 
   late bool isBossEdit;
@@ -37,7 +38,7 @@ class _AddBossModalState extends State<AddBossModal> {
 
   late bool _isChecked = isBossEdit? widget.boss?.isDefeated ?? false : false; 
 
-  ImageProvider selectedIcon = AssetImage("Img/question_mark.png");
+  String selectedIcon = "Img/question_mark.png";
   int? selectedIndex;
 
   // Need to select icon that was selected previously
@@ -47,16 +48,16 @@ class _AddBossModalState extends State<AddBossModal> {
     super.initState();
     isBossEdit = (widget.boss != null);
 
-    if (isBossEdit && widget.boss?.bossIcon != null) {
-      final bossIcon = widget.boss!.bossIcon;
+    if (isBossEdit && widget.boss?.bossIconPath != null) {
+      final bossIconPath = widget.boss!.bossIconPath;
 
-      selectedIndex = _iconsList.indexWhere((icon) => icon == bossIcon);
+      selectedIndex = _iconsList.indexWhere((icon) => icon == bossIconPath);
 
       if (selectedIndex != -1) {
         selectedIcon = _iconsList[selectedIndex!];
       } else {
         selectedIndex = null;
-        selectedIcon = bossIcon;
+        selectedIcon = bossIconPath;
       }
     }
   }
@@ -275,7 +276,7 @@ class _AddBossModalState extends State<AddBossModal> {
                         children: _iconsList.asMap().entries.map((entry) {
                           // Need to select icon
                           final int index = entry.key;
-                          final ImageProvider iconAsset = entry.value;
+                          final String iconPath = entry.value;
                           final bool isSelected = (selectedIndex == index);
 
                           return InkWell(
@@ -294,7 +295,7 @@ class _AddBossModalState extends State<AddBossModal> {
                               child: Center(
                                 child: Image(
                                   color: MyColors.whiteColor, 
-                                  image: iconAsset, 
+                                  image: AssetImage(iconPath), 
                                   width: MySizes.modalIconsSize, 
                                   height: MySizes.modalIconsSize
                                 ),
@@ -323,14 +324,25 @@ class _AddBossModalState extends State<AddBossModal> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     spacing: 10,
                     children: [
-                      MyActionButton(text: (isBossEdit? "Edit Boss" : "Add Boss"), onPressed: () {
+                      MyActionButton(text: (isBossEdit? "Edit Boss" : "Add Boss"), onPressed: () async {
+                        int? bossDeaths = int.tryParse(_deathsController.text);
+                        if(bossDeaths != null && bossDeaths < 0) {
+                          await showDialog(
+                            context: context, 
+                            builder: (context) => InformModal(
+                              title: "Error",
+                              message: "Deaths can't be negative",
+                            ),
+                          );
+                          return;
+                        }
                         // To get a boss out of modal window 
                         // right to boss list
                         BossModel boss = BossModel(
                           bossTitle: _titleController.text, 
-                          bossSubtitle: _subTitleController.text, 
-                          bossImage: selectedIcon, 
-                          deaths: int.tryParse(_deathsController.text),
+                          bossSubTitle: _subTitleController.text, 
+                          bossIconPath: selectedIcon, 
+                          bossDeaths: int.tryParse(_deathsController.text),
                           isDefeated: _isChecked
                         );
                         Navigator.of(context).pop(boss);

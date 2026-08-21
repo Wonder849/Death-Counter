@@ -1,15 +1,10 @@
 import 'package:death_counter/firebase_options.dart';
-import 'package:death_counter/lists/lists_controllers/boss_list_controller.dart';
-import 'package:death_counter/lists/lists_controllers/games_list_controller.dart';
-import 'package:death_counter/models/boss_model.dart';
-import 'package:death_counter/models/game_model.dart';
 import 'package:death_counter/styles/colors.dart';
 import 'package:death_counter/utils/auth_gate.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +12,7 @@ void main() async {
 
   WindowOptions windowOptions = const WindowOptions(
     titleBarStyle: TitleBarStyle.hidden, // Hide classic title bar
-    size: Size(900, 800),
+    size: Size(900, 750),
     minimumSize: Size(900, 750),
     maximumSize: Size(1360, 1280),
     center: true
@@ -35,15 +30,7 @@ void main() async {
   // Pass all uncaught errors to Crashlytics
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => GamesListController([GameModel(gameName: "asd", bosses: [BossModel(bossTitle: "1",isDefeated: false, deaths: 2), BossModel(bossTitle: "2",isDefeated: false)]),GameModel(gameName: "AAAsd", bosses: [BossModel(bossTitle: "3",isDefeated: false), BossModel(bossTitle: "4",isDefeated: false)])])),
-        ChangeNotifierProvider(create: (context) => BossListController([]))
-      ],
-      child: MyApp(),
-    )
-  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

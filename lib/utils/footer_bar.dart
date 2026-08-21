@@ -1,51 +1,57 @@
-import 'package:death_counter/lists/lists_controllers/boss_list_controller.dart';
-import 'package:death_counter/lists/lists_controllers/games_list_controller.dart';
+import 'package:death_counter/models/boss_model.dart';
+import 'package:death_counter/models/game_model.dart';
 import 'package:death_counter/styles/colors.dart';
 import 'package:death_counter/styles/sizes.dart';
 import 'package:flutter/material.dart';
 
 // Displays all games deaths 
 class CustomFooterBarGamesPart extends StatelessWidget {
-  final GamesListController gamesListNotifier;
-  final BossListController bossListNotifier;
+
+  final List<GameModel> games;
 
   const CustomFooterBarGamesPart({
     super.key,
-    required this.gamesListNotifier,
-    required this.bossListNotifier,
+    required this.games,
   });
+
+  int countAllDeaths() {
+    int deaths = 0;
+    for(int i = 0; i < games.length; ++i) {
+      GameModel currentGame = games[i];
+      for(int j = 0; j < games.length; ++j) {
+        deaths += currentGame.gameDeaths ?? 0;
+      }
+    }
+
+    return deaths;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: Listenable.merge([gamesListNotifier, bossListNotifier]),
-      builder: (context, child) {
-        return SizedBox(
-          height: MySizes.footerBarHeight,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                gamesListNotifier.countAllDeaths().toString(),
-                style: TextStyle(
-                  color: MyColors.yellowColor,
-                  fontSize: MySizes.titlesTextSz
-                ),
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                " Total Deaths",
-                style: TextStyle(
-                  color: MyColors.whiteColor,
-                  fontSize: MySizes.titlesTextSz - 5
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+    return SizedBox(
+      height: MySizes.footerBarHeight,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            countAllDeaths().toString(),
+            style: TextStyle(
+              color: MyColors.yellowColor,
+              fontSize: MySizes.titlesTextSz
+            ),
+            textAlign: TextAlign.center,
           ),
-        );
-      },
+          Text(
+            " Total Deaths",
+            style: TextStyle(
+              color: MyColors.whiteColor,
+              fontSize: MySizes.titlesTextSz - 5
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -53,110 +59,95 @@ class CustomFooterBarGamesPart extends StatelessWidget {
 
 // Displays selected game info
 class CustomFooterBarBossPart extends StatelessWidget {
-  final GamesListController gamesListNotifier;
-  final BossListController bossListNotifier;
+
+  final List<BossModel> bosses;
 
   const CustomFooterBarBossPart({
     super.key,
-    required this.gamesListNotifier,
-    required this.bossListNotifier,
+    required this.bosses,
   });
-
-  String findMaxDeaths() {
-    int maxDeathsIndex = bossListNotifier.FindMaxDeathsIndex();
-    if(maxDeathsIndex != -1) {
-      int? deaths = bossListNotifier.bossList[maxDeathsIndex].bossDeaths;
-      if(deaths != null) {
-        return deaths.toString();
-      }
-    }
-
-    return "0";
-  }
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: Listenable.merge([gamesListNotifier, bossListNotifier]),
-      builder: (context, child) {
-        return SizedBox(
-          height: MySizes.footerBarHeight,
-          child: Row(
+    final total = bosses.fold(0, (sum, boss) => sum + (boss.bossDeaths?? 0) );
+    final maxDeaths = bosses.isEmpty? 0 : bosses.map((boss) => boss.bossDeaths ?? 0).reduce((a,b) => a > b ? a : b);
+    final average = bosses.isEmpty? 0 : (total / bosses.length).round();
+    return SizedBox(
+      height: MySizes.footerBarHeight,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          SizedBox(width: MySizes.footerBarBossSpacers,),
+          Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(width: MySizes.footerBarBossSpacers,),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    bossListNotifier.CountTotalDeaths().toString(),
-                    style: TextStyle(
-                      color: MyColors.almostYellowColor,
-                      fontSize: MySizes.footerBarBossTextSz
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    "Total",
-                    style: TextStyle(
-                      color: MyColors.whiteColor,
-                      fontSize: MySizes.footerBarBossTextSz - 5
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+              Text(
+                total.toString(),
+                style: TextStyle(
+                  color: MyColors.almostYellowColor,
+                  fontSize: MySizes.footerBarBossTextSz
+                ),
+                textAlign: TextAlign.center,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    findMaxDeaths(),
-                    style: TextStyle(
-                      color: MyColors.yellowColor,
-                      fontSize: MySizes.footerBarBossTextSz
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    "Max",
-                    style: TextStyle(
-                      color: MyColors.whiteColor,
-                      fontSize: MySizes.footerBarBossTextSz - 5
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+              Text(
+                "Total",
+                style: TextStyle(
+                  color: MyColors.whiteColor,
+                  fontSize: MySizes.footerBarBossTextSz - 5
+                ),
+                textAlign: TextAlign.center,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    bossListNotifier.FindAverageDeaths().toString(),
-                    style: TextStyle(
-                      color: MyColors.almostYellowColor,
-                      fontSize: MySizes.footerBarBossTextSz
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    "Average",
-                    style: TextStyle(
-                      color: MyColors.whiteColor,
-                      fontSize: MySizes.footerBarBossTextSz - 5
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-              SizedBox(width: MySizes.footerBarBossSpacers,)
             ],
           ),
-        );
-      },
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                maxDeaths.toString(),
+                style: TextStyle(
+                  color: MyColors.yellowColor,
+                  fontSize: MySizes.footerBarBossTextSz
+                ),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                "Max",
+                style: TextStyle(
+                  color: MyColors.whiteColor,
+                  fontSize: MySizes.footerBarBossTextSz - 5
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                average.toString(),
+                style: TextStyle(
+                  color: MyColors.almostYellowColor,
+                  fontSize: MySizes.footerBarBossTextSz
+                ),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                "Average",
+                style: TextStyle(
+                  color: MyColors.whiteColor,
+                  fontSize: MySizes.footerBarBossTextSz - 5
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+          SizedBox(width: MySizes.footerBarBossSpacers,)
+        ],
+      ),
     );
   }
 }

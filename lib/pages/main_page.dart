@@ -1,18 +1,18 @@
 import 'package:death_counter/lists/lists_appearance/lists_body.dart';
-import 'package:death_counter/lists/lists_controllers/boss_list_controller.dart';
-import 'package:death_counter/modal_windows/add_boss_modal.dart';
-import 'package:death_counter/modal_windows/add_game_modal.dart';
+import 'package:death_counter/modal_windows/boss_modal.dart';
+import 'package:death_counter/modal_windows/game_modal.dart';
 import 'package:death_counter/modal_windows/inform_modal.dart';
+import 'package:death_counter/models/boss_model.dart';
 import 'package:death_counter/models/game_model.dart';
+import 'package:death_counter/services/firestore_service.dart';
 import 'package:death_counter/styles/colors.dart';
 import 'package:death_counter/styles/sizes.dart';
-import 'package:death_counter/lists/lists_controllers/games_list_controller.dart';
 import 'package:death_counter/lists/lists_appearance/lists_headers.dart';
 import 'package:death_counter/utils/buttons.dart';
 import 'package:death_counter/utils/footer_bar.dart';
 import 'package:death_counter/utils/title_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -21,15 +21,11 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  // Manages clicking on game tiles and 
-  // updating current displayable boss list
-  void onGameSelected(int index) {
-    final GamesListController gamesListController = context.read<GamesListController>();
-    final BossListController bossListController = context.read<BossListController>();
 
-    gamesListController.SelectGame(index);
-    bossListController.LoadBosses(gamesListController.gamesList[index].bosses);
-  }
+  final FirestoreService _firestoreService = FirestoreService();
+  String get _uid => FirebaseAuth.instance.currentUser!.uid;
+
+  String? _selectedGameId;
 
   // For adding games to game list
   // Opens a modal window and waiting for
@@ -37,96 +33,129 @@ class _MainPageState extends State<MainPage> {
   void addGame() async {
     final newGame = await showDialog<GameModel>(
       context: context, 
-      builder: (context) { return AddGameModal(); }
+      builder: (context) {
+        return GameModal();
+      },
     );
 
     if(newGame != null) {
-      final GamesListController gamesListController = context.read<GamesListController>();
-      gamesListController.AddGame(game: newGame);
+      await _firestoreService.addGame(_uid, newGame);
     }
   }
 
-  void addBoss() async {
-    final GamesListController gamesListController = context.read<GamesListController>();
-    final BossListController bossListController = context.read<BossListController>();
-
-    final newBoss = await showDialog(
-      context: context, 
-      builder: (context) {
-        if(gamesListController.selectedIndex == -1) {
-          return InformModal(
-            title: "Add Boss",
-            message: "Please select the game for which you want to add a Boss to",
-          );
-        }
-        else {
-          return AddBossModal(
-            gameName: gamesListController.gamesList[gamesListController.selectedIndex].gameName
-          );
-        }
-      } 
+  void addBoss(GameModel? selectedGame) async {
+  if (selectedGame == null) {
+    await showDialog(
+      context: context,
+      builder: (context) => InformModal(
+        title: "Add Boss",
+        message: "Please select the game for which you want to add a Boss to",
+      ),
     );
-
-    if(newBoss != null) {
-      bossListController.AddBoss(boss: newBoss);
-    }
+    return;
   }
+
+  final newBoss = await showDialog<BossModel>(
+    context: context,
+    builder: (context) => BossModal(gameName: selectedGame.gameName),
+  );
+
+  if (newBoss != null) {
+    await _firestoreService.addBoss(_uid, selectedGame.gameId!, newBoss);
+  }
+}
 
   @override
   Widget build(BuildContext context) {
-    // Obtain controllers via Provider to make sure
-    // that info updates
-    final gamesListController = context.watch<GamesListController>();
-    final bossListController = context.watch<BossListController>();
-
     return Scaffold(
       backgroundColor: MyColors.mainDarkColor,
       body: Column(
         children: [
           CustomTitleBar(),
           Expanded(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    children: [
-                      GameListHeader(),
-                      // For list knows its hight limits
-                      // other way its not working XD
-                      Expanded(
-                        child: GamesListBody(
-                          listNotifier: gamesListController,
-                          onGameTap: onGameSelected,
+            child: StreamBuilder(
+              stream: _firestoreService.gamesStream(_uid),
+              builder: (context, gamesSnapshot) {
+                final games = gamesSnapshot.data ?? [];
+                final findMatchesGame = games.where((game) => game.gameId == _selectedGameId);
+                final selectedGame = findMatchesGame.isEmpty? null : findMatchesGame.first;
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: [
+                          GameListHeader(),
+                          // For list knows its hight limits
+                          // other way its not working XD
+                          Expanded(
+                            child: GamesListBody(
+                              games: games,
+                              selectedId: _selectedGameId,
+                              onGameTap: (game) => setState(() {
+                                _selectedGameId = game.gameId;
+                              }),
+                            ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: MyActionButton(icon: Icon(Icons.add, size: 18, color: MyColors.whiteColor,), text: "Add Game", onPressed: () => addGame()),
+                          ),
+                          CustomFooterBarGamesPart(games: games,)
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: MyActionButton(icon: Icon(Icons.add, size: 18, color: MyColors.whiteColor,), text: "Add Game", onPressed: () => addGame()),
-                      ),
-                      CustomFooterBarGamesPart(gamesListNotifier: gamesListController, bossListNotifier: bossListController)
-                    ],
-                  ),
-                ),
-                VerticalDivider(
-                  width: MySizes.borderWidth,
-                  color: MyColors.bordersColor,
-                  thickness: MySizes.borderWidth,
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    children: [
-                      BossListHeader(listNotifier: gamesListController,  onButtonClicked: addBoss),
-                      // For list knows its hight limits
-                      // other way its not working XD
-                      Expanded(child: BossListBody(listNotifier: bossListController)),
-                      CustomFooterBarBossPart(gamesListNotifier: gamesListController, bossListNotifier: bossListController)
-                    ],
-                  ),
-                ),
-              ],
+                    ),
+                    VerticalDivider(
+                      width: MySizes.borderWidth,
+                      color: MyColors.bordersColor,
+                      thickness: MySizes.borderWidth,
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: selectedGame == null
+                          ? Column(
+                              children: [
+                                BossListHeader(
+                                  selectedGame: null,
+                                  bossCount: 0,
+                                  onButtonClicked: () => addBoss(null),
+                                ),
+                                const Expanded(
+                                  child: Center(child: Text('Select a game')),
+                                ),
+                              ],
+                            )
+                          : StreamBuilder<List<BossModel>>(
+                              stream: _firestoreService.bossesStream(
+                                _uid,
+                                selectedGame.gameId!,
+                              ),
+                              builder: (context, bossesSnapshot) {
+                                final bosses = bossesSnapshot.data ?? [];
+                                return Column(
+                                  children: [
+                                    BossListHeader(
+                                      selectedGame: selectedGame,
+                                      bossCount: bosses.length,
+                                      onButtonClicked: () => addBoss(selectedGame),
+                                    ),
+                                    Expanded(
+                                      child: BossListBody(
+                                        gameId: selectedGame.gameId!,
+                                        gameName: selectedGame.gameName,
+                                        bosses: bosses,
+                                      ),
+                                    ),
+                                    CustomFooterBarBossPart(bosses: bosses),
+                                  ],
+                                );
+                              },
+                            ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ],

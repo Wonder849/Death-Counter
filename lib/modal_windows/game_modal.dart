@@ -4,23 +4,23 @@ import 'package:death_counter/styles/sizes.dart';
 import 'package:death_counter/utils/buttons.dart';
 import 'package:flutter/material.dart';
 
-class AddGameModal extends StatefulWidget {
+class GameModal extends StatefulWidget {
 
   final GameModel? game;
 
-  const AddGameModal({super.key, this.game});
+  const GameModal({super.key, this.game});
 
   @override
-  State<AddGameModal> createState() => _AddGameModalState();
+  State<GameModal> createState() => _GameModalState();
 }
 
-class _AddGameModalState extends State<AddGameModal> {
-  final List<ImageProvider> _iconsList = [
-    AssetImage('Img/sword_icon.png'),
-    AssetImage('Img/demon_skull.png'),
-    AssetImage('Img/dragon.png'),
+class _GameModalState extends State<GameModal> {
+  final List<String> _iconsList = [
+    'Img/sword_icon.png',
+    'Img/demon_skull.png',
+    'Img/dragon.png',
     
-    AssetImage('Img/Plus.png')
+    'Img/Plus.png',
   ];
 
   late bool isGameEdit;
@@ -28,7 +28,7 @@ class _AddGameModalState extends State<AddGameModal> {
   // Controller to get a game title
   late final _controller = isGameEdit? TextEditingController(text: widget.game?.gameName ?? ""): TextEditingController();
 
-  ImageProvider selectedIcon = AssetImage('Img/question_mark.png');
+  String selectedIcon = 'Img/question_mark.png';
   int? selectedIndex;
 
   @override
@@ -36,16 +36,16 @@ class _AddGameModalState extends State<AddGameModal> {
     super.initState();
     isGameEdit = (widget.game != null);
 
-    if (isGameEdit && widget.game?.gameIcon != null) {
-      final gameIcon = widget.game!.gameIcon;
+    if (isGameEdit) {
+      final gameIconPath = widget.game!.gameIconPath;
 
-      selectedIndex = _iconsList.indexWhere((icon) => icon == gameIcon);
+      selectedIndex = _iconsList.indexWhere((icon) => icon == gameIconPath);
 
       if (selectedIndex != -1) {
         selectedIcon = _iconsList[selectedIndex!];
       } else {
         selectedIndex = null;
-        selectedIcon = gameIcon;
+        selectedIcon = gameIconPath;
       }
     }
   }
@@ -158,7 +158,7 @@ class _AddGameModalState extends State<AddGameModal> {
                         children: _iconsList.asMap().entries.map((entry) {
                           // Need to select icon
                           final int index = entry.key;
-                          final ImageProvider iconAsset = entry.value;
+                          final String iconPath = entry.value;
                           final bool isSelected = selectedIndex == index;
 
                           return InkWell(
@@ -177,7 +177,7 @@ class _AddGameModalState extends State<AddGameModal> {
                               child: Center(
                                 child: Image(
                                   color: MyColors.whiteColor, 
-                                  image: iconAsset, 
+                                  image: AssetImage(iconPath), 
                                   width: MySizes.modalIconsSize, 
                                   height: MySizes.modalIconsSize
                                 ),
@@ -209,7 +209,7 @@ class _AddGameModalState extends State<AddGameModal> {
                       MyActionButton(text: "Add Game", onPressed: () {
                         // To get a game out of modal window 
                         // right to games list
-                        GameModel game = GameModel(gameIcon: selectedIcon, gameName: _controller.text, bosses: []);
+                        GameModel game = GameModel(gameIconPath: selectedIcon, gameName: _controller.text);
                         Navigator.of(context).pop(game);
                       }),
                       MyActionButton(text: "Cancel", onPressed: () {Navigator.of(context).pop(null);})
