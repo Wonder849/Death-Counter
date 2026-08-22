@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:death_counter/services/auth_service.dart';
 import 'package:death_counter/styles/colors.dart';
 import 'package:death_counter/styles/sizes.dart';

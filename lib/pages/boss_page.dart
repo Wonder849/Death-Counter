@@ -8,7 +8,6 @@ import 'package:death_counter/utils/buttons.dart';
 import 'package:death_counter/utils/title_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 // Page for interacting with boss info 
 class BossPage extends StatefulWidget {
