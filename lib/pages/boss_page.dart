@@ -45,7 +45,7 @@ class _BossPageState extends State<BossPage> {
           backgroundColor: MyColors.mainDarkColor,
           body: Column(
             children: [
-              CustomTitleBar(),
+              CustomTitleBar(isEnabled: true,),
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.all(MySizes.bossPageContentPdd),

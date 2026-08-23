@@ -7,7 +7,8 @@ import 'buttons.dart';
 // Custom title bar with title,
 // Close, Hide to Tray and Setting buttons
 class CustomTitleBar extends StatelessWidget {
-  const CustomTitleBar({super.key});
+  final bool isEnabled;
+  const CustomTitleBar({super.key, required this.isEnabled});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +21,8 @@ class CustomTitleBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          MyIconButton(icon: (Icons.settings), onPressed: () => {}),
-          MyIconButton(icon: (Icons.person), onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()))}),
+          MyIconButton(icon: (Icons.settings), onPressed: () => isEnabled? {} : {}),
+          MyIconButton(icon: (Icons.person), onPressed: () => isEnabled? {Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()))} : {}),
           Expanded(child: DragToMoveArea(
             child: Text(
               "DEATH COUNTER",

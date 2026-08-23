@@ -212,7 +212,32 @@ class _BossTileState extends State<BossTile> {
                       fontSize: 20
                     ),
                   ),
-                  MyIconButton(icon: Icons.chevron_right, borderRadius: true, onPressed: () => {}, contSize: 30, iconSize: 20)
+                  MyIconButton(
+                    icon: Icons.chevron_right, 
+                    borderRadius: true,
+                    onPressed: () => {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(milliseconds: 500),
+                          pageBuilder: (context, animation, secondaryAnimation) => 
+                            BossPage(boss: widget.boss, gameId: widget.gameId, gameName: widget.gameName),
+                            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                              final tween = Tween<Offset>(
+                                begin: const Offset(1.0, 0.0), 
+                                end: Offset.zero,  
+                              ).chain(CurveTween(curve: Curves.easeOutCubic));
+                              return SlideTransition(
+                                position: animation.drive(tween),
+                                child: child,
+                              );
+                            },
+                        ),
+                      )
+                    }, 
+                    contSize: 30, 
+                    iconSize: 20
+                  )
                 ],
               ),
             )

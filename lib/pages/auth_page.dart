@@ -30,10 +30,13 @@ class _AuthPageState extends State<AuthPage> {
 
   String? checkTextControllersEmpty() {
 
-    if(_userNameController.text.isEmpty) {
-      return "Error: Enter UserName please";
+    if(isSignUp == true) {
+      if(_userNameController.text.isEmpty) {
+        return "Error: Enter UserName please";
+      }
     }
-    else if (_emailController.text.isEmpty) {
+    
+    if (_emailController.text.isEmpty) {
       return "Error: Enter Email please";
     } else if (_passwordController.text.isEmpty) {
       return "Error: Enter password please";
@@ -73,6 +76,7 @@ class _AuthPageState extends State<AuthPage> {
     } catch (exc) {
       setState(() {
         errorMessage =  "Error: $exc";
+        
       });
     } finally {
       if(mounted) {
@@ -118,7 +122,7 @@ class _AuthPageState extends State<AuthPage> {
       backgroundColor: MyColors.mainDarkColor,
       body: Column(
         children: [
-          CustomTitleBar(),
+          CustomTitleBar(isEnabled: false,),
           Expanded(
             child: Padding(
               padding: EdgeInsetsGeometry.only(left: 100, right: 100, bottom: 30),
@@ -212,6 +216,11 @@ class _AuthPageState extends State<AuthPage> {
                           TextField(
                             controller: _passwordController,
                             cursorColor: MyColors.whiteColor,
+                            onSubmitted: (_) {
+                              if (!isLoading) {
+                                submitEmailAndPassword();
+                              }
+                            },
                             decoration: InputDecoration(
                               isDense: true, 
                               contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
@@ -280,6 +289,7 @@ class _AuthPageState extends State<AuthPage> {
                                     ..onTap = () {
                                       setState(() {
                                         isSignUp = !isSignUp;
+                                        errorMessage = null;
                                       });
                                     },
                                 ),

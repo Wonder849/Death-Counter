@@ -22,7 +22,7 @@ class _ProfilePageState extends State<ProfilePage> {
       backgroundColor: MyColors.mainDarkColor,      
       body: Column(
         children: [
-          CustomTitleBar(),
+          CustomTitleBar(isEnabled: true,),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

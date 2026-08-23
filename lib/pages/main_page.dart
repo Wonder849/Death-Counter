@@ -71,7 +71,7 @@ class _MainPageState extends State<MainPage> {
       backgroundColor: MyColors.mainDarkColor,
       body: Column(
         children: [
-          CustomTitleBar(),
+          CustomTitleBar(isEnabled: true,),
           Expanded(
             child: StreamBuilder(
               stream: _firestoreService.gamesStream(_uid),
@@ -114,18 +114,30 @@ class _MainPageState extends State<MainPage> {
                     Expanded(
                       flex: 2,
                       child: selectedGame == null
-                          ? Column(
-                              children: [
-                                BossListHeader(
-                                  selectedGame: null,
-                                  bossCount: 0,
-                                  onButtonClicked: () => addBoss(null),
-                                ),
-                                const Expanded(
-                                  child: Center(child: Text('Select a game')),
-                                ),
-                              ],
-                            )
+                          ? games.isEmpty 
+                            ? Column(
+                                children: [
+                                  BossListHeader(
+                                    selectedGame: null,
+                                    bossCount: 0,
+                                    onButtonClicked: () => addBoss(null),
+                                  ),
+                                  const Expanded(
+                                    child: Center(child: Text('')),
+                                  ),
+                                ],
+                              ) : Column(
+                                children: [
+                                  BossListHeader(
+                                    selectedGame: null,
+                                    bossCount: 0,
+                                    onButtonClicked: () => addBoss(null),
+                                  ),
+                                  const Expanded(
+                                    child: Center(child: Text('Select a game')),
+                                  ),
+                                ],
+                              )
                           : StreamBuilder<List<BossModel>>(
                               stream: _firestoreService.bossesStream(
                                 _uid,

@@ -17,10 +17,7 @@ class CustomFooterBarGamesPart extends StatelessWidget {
   int countAllDeaths() {
     int deaths = 0;
     for(int i = 0; i < games.length; ++i) {
-      GameModel currentGame = games[i];
-      for(int j = 0; j < games.length; ++j) {
-        deaths += currentGame.gameDeaths ?? 0;
-      }
+      deaths += games[i].gameDeaths?? 0;
     }
 
     return deaths;
