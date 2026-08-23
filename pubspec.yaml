@@ -1,0 +1,28 @@
+name: death_counter
+description: "A new Flutter project."
+version: 1.0.1+1
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  window_manager: ^0.5.1
+  cupertino_icons: ^1.0.8
+  provider: ^6.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets: 
+    - Img/
+
+  fonts:
+    - family: IBMPlexMono
+      fonts:
+        - asset: fonts/IBMPlexMono-Bold.ttf
