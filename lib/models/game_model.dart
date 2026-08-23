@@ -1,22 +1,40 @@
-import 'package:death_counter/models/boss_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 // Game information
 class GameModel {
-  ImageProvider gameIcon = AssetImage('Img/skull.png');
+  String? gameId;
 
-  String gameName = "Game";
+  String gameIconPath;
+
+  String gameName;
 
   int? gameDeaths;
 
-  List<BossModel>? bosses;
+  GameModel({
+    this.gameId,
+    this.gameIconPath = 'Img/question_mark.png',
+    required this.gameName,
+    this.gameDeaths,
+  });
 
-  GameModel({ImageProvider? gameIcon, required this.gameName,int? gameDeaths,List<BossModel>? bosses}) {
-    this.gameIcon = gameIcon ?? AssetImage('Img/skull.png');
-    this.gameName = gameName;
-    this.gameDeaths = gameDeaths;
-    this.bosses = bosses;
+  factory GameModel.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data()!;
+    return GameModel(
+      gameId: doc.id,
+      gameIconPath: data['gameIconPath'] ?? 'Img/question_mark.png',
+      gameName: data['gameName'] ?? 'Game',
+      gameDeaths: data['gameDeaths'] ?? 0,
+    );
   }
+
+  Map<String, dynamic> toFirestore() => {
+    'gameIconPath' : gameIconPath,
+    'gameName' : gameName,
+    'gameDeaths' : gameDeaths
+  };
+
+  ImageProvider get gameIcon => gameIconPath.startsWith('http') ? NetworkImage(gameIconPath) : AssetImage(gameIconPath);
 
   @override
   String toString() {

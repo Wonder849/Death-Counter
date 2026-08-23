@@ -1,3 +1,4 @@
+import 'package:death_counter/pages/profile_page.dart';
 import 'package:death_counter/styles/colors.dart';
 import 'package:death_counter/styles/sizes.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class CustomTitleBar extends StatelessWidget {
       child: Row(
         children: [
           MyIconButton(icon: (Icons.settings), onPressed: () => {}),
+          MyIconButton(icon: (Icons.person), onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()))}),
           Expanded(child: DragToMoveArea(
             child: Text(
               "DEATH COUNTER",

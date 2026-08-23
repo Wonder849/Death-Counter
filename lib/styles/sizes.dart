@@ -46,6 +46,6 @@ class MySizes
 
   static const double bossPageAddBtnSz = 120;
 
-  static const double authPageTitleTextSz = 28;
-  static const double authPageSubTitleTextSz = 20;
+  static const double authPageTitleTextSz = 25;
+  static const double authPageSubTitleTextSz = 18;
 }

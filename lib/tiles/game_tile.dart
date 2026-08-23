@@ -1,11 +1,11 @@
-import 'package:death_counter/lists/lists_controllers/games_list_controller.dart';
-import 'package:death_counter/modal_windows/add_game_modal.dart';
+import 'package:death_counter/modal_windows/game_modal.dart';
 import 'package:death_counter/modal_windows/inform_modal.dart';
 import 'package:death_counter/models/game_model.dart';
+import 'package:death_counter/services/firestore_service.dart';
 import 'package:death_counter/styles/colors.dart';
 import 'package:death_counter/styles/sizes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 // Widget that contains game info
 class GameTile extends StatefulWidget {
@@ -25,35 +25,30 @@ class GameTile extends StatefulWidget {
 }
 
 class _GameTileState extends State<GameTile> {
+  
+  final _firestoreService = FirestoreService();
+  String get _uid => FirebaseAuth.instance.currentUser!.uid;
 
   void editGame() async {
-    final gamesListController = context.read<GamesListController>();
-    int index = gamesListController.gamesList.indexOf(widget.game);
     final newGame = await showDialog(
       context: context,
       builder: (context) {
-        if (index == -1) {
-          return InformModal(message: "");
-        } else {
-          return AddGameModal(game: widget.game);
-        }
+        return GameModal(game: widget.game);
       },
     );
 
     if (newGame != null) {
-      gamesListController.ChangeGameInfo(
-        gameIndex: index,
-        gameName: newGame.gameName,
-        gameDeaths: newGame.gameDeaths,
-        gameIcon: newGame.gameIcon,
+      await _firestoreService.updateGame(
+        _uid, 
+        widget.game.gameId!,
+        widget.game.gameIconPath, 
+        widget.game.gameName,
+        widget.game.gameDeaths
       );
     }
   }
 
   void deleteGame() async {
-    final gamesListController = context.read<GamesListController>();
-    int index = gamesListController.gamesList.indexOf(widget.game);
-
     bool? answer = await showDialog(
       context: context,
       builder: (context) {
@@ -66,7 +61,7 @@ class _GameTileState extends State<GameTile> {
     );
 
      if (answer != null && answer == true) {
-      gamesListController.DeleteGame(index);
+      await _firestoreService.deleteGame(_uid, widget.game.gameId!);
     }
   }
 
