@@ -3,6 +3,7 @@ import 'package:death_counter/styles/colors.dart';
 import 'package:death_counter/styles/sizes.dart';
 import 'package:death_counter/utils/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class GameModal extends StatefulWidget {
 
@@ -83,142 +84,158 @@ class _GameModalState extends State<GameModal> {
         decoration: BoxDecoration(
           borderRadius: BorderRadiusGeometry.circular(10),
         ),
-        child: Column(
-          children: [
-            // Title bar with button X
-            Container(
-              height: MySizes.titleBarsHeight,
-              width: MediaQuery.sizeOf(context).width * 0.6,
-              decoration: BoxDecoration(border: Border(bottom: BorderSide(width: MySizes.borderWidth, color: MyColors.greyColor))),
-              child: Stack(
-                alignment: Alignment.center,
-                  children: [
-                    Text(isGameEdit? "Edit Game" : "Add Game", style: TextStyle(fontSize: MySizes.modalTextHeadingsSz),),
-                    Positioned(
-                      right: 0,
-                      child: MyIconButton(
-                        icon: (Icons.close),
-                        onPressed: () => {Navigator.of(context).pop()}
-                      ),
-                    ),
-                  ],
-              ),
-            ),
-            // Rest of content: text fields, icons...
-            Expanded(
-              flex: 4,
-              child: Padding(
-                padding: const EdgeInsets.only(left: MySizes.modalContPdd, right: MySizes.modalContPdd),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: MediaQuery.sizeOf(context).height / 30,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      spacing: MySizes.modalContGap,
+        child: CallbackShortcuts(
+          bindings: {
+            const SingleActivator(LogicalKeyboardKey.enter): () {
+              // To get a game out of modal window
+              // right to games list
+              GameModel game = GameModel(
+                gameIconPath: selectedIcon,
+                gameName: _controller.text,
+              );
+              Navigator.of(context).pop(game);
+            }
+          },
+          child: Focus(
+            autofocus: true,
+            child: Column(
+              children: [
+                // Title bar with button X
+                Container(
+                  height: MySizes.titleBarsHeight,
+                  width: MediaQuery.sizeOf(context).width * 0.6,
+                  decoration: BoxDecoration(border: Border(bottom: BorderSide(width: MySizes.borderWidth, color: MyColors.greyColor))),
+                  child: Stack(
+                    alignment: Alignment.center,
                       children: [
-                        Text(
-                          "Title",
-                          style: TextStyle(
-                            fontSize: MySizes.modalTextHeadingsSz,
+                        Text(isGameEdit? "Edit Game" : "Add Game", style: TextStyle(fontSize: MySizes.modalTextHeadingsSz),),
+                        Positioned(
+                          right: 0,
+                          child: MyIconButton(
+                            icon: (Icons.close),
+                            onPressed: () => {Navigator.of(context).pop()}
                           ),
                         ),
-                        TextField(
-                          controller: _controller,
-                          cursorColor: MyColors.whiteColor,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor : MyColors.modalTextFieldColor,
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(10),
+                      ],
+                  ),
+                ),
+                // Rest of content: text fields, icons...
+                Expanded(
+                  flex: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: MySizes.modalContPdd, right: MySizes.modalContPdd),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      spacing: MediaQuery.sizeOf(context).height / 30,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          spacing: MySizes.modalContGap,
+                          children: [
+                            Text(
+                              "Title",
+                              style: TextStyle(
+                                fontSize: MySizes.modalTextHeadingsSz,
+                              ),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(10),
+                            TextField(
+                              controller: _controller,
+                              cursorColor: MyColors.whiteColor,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor : MyColors.modalTextFieldColor,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(10),
+                                )
+                              ),
                             )
-                          ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          spacing: MySizes.modalContGap,
+                          children: [
+                            Text(
+                              "Icon",
+                              style: TextStyle(
+                                fontSize: MySizes.modalTextHeadingsSz,
+                              ),
+                            ),
+                           Wrap(
+                            spacing: MySizes.modalIconsGap, // Horizontal gap
+                            runSpacing: MySizes.modalIconsGap, // Vertical gap 
+                            children: _iconsList.asMap().entries.map((entry) {
+                              // Need to select icon
+                              final int index = entry.key;
+                              final String iconPath = entry.value;
+                              final bool isSelected = selectedIndex == index;
+            
+                              return InkWell(
+                                onTap: () => selectIcon(index),
+                                borderRadius: BorderRadius.circular(MySizes.modalIconsBorderRadius),
+                                hoverColor: MyColors.greyColor,
+                                splashColor: Colors.transparent,
+                                child: Container(
+                                  width: MySizes.buttonIconContSz,
+                                  height: MySizes.buttonIconContSz,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(MySizes.modalIconsBorderRadius), 
+                                    border: BoxBorder.all(color: MyColors.greyColor),
+                                    color: isSelected? MyColors.modalIconSelected : Colors.transparent
+                                  ),
+                                  child: Center(
+                                    child: Image(
+                                      color: MyColors.whiteColor, 
+                                      image: AssetImage(iconPath), 
+                                      width: MySizes.modalIconsSize, 
+                                      height: MySizes.modalIconsSize
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                           )
+                          ],
                         )
                       ],
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      spacing: MySizes.modalContGap,
-                      children: [
-                        Text(
-                          "Icon",
-                          style: TextStyle(
-                            fontSize: MySizes.modalTextHeadingsSz,
-                          ),
-                        ),
-                       Wrap(
-                        spacing: MySizes.modalIconsGap, // Horizontal gap
-                        runSpacing: MySizes.modalIconsGap, // Vertical gap 
-                        children: _iconsList.asMap().entries.map((entry) {
-                          // Need to select icon
-                          final int index = entry.key;
-                          final String iconPath = entry.value;
-                          final bool isSelected = selectedIndex == index;
-
-                          return InkWell(
-                            onTap: () => selectIcon(index),
-                            borderRadius: BorderRadius.circular(MySizes.modalIconsBorderRadius),
-                            hoverColor: MyColors.greyColor,
-                            splashColor: Colors.transparent,
-                            child: Container(
-                              width: MySizes.buttonIconContSz,
-                              height: MySizes.buttonIconContSz,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(MySizes.modalIconsBorderRadius), 
-                                border: BoxBorder.all(color: MyColors.greyColor),
-                                color: isSelected? MyColors.modalIconSelected : Colors.transparent
-                              ),
-                              child: Center(
-                                child: Image(
-                                  color: MyColors.whiteColor, 
-                                  image: AssetImage(iconPath), 
-                                  width: MySizes.modalIconsSize, 
-                                  height: MySizes.modalIconsSize
-                                ),
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                       )
-                      ],
-                    )
-                  ],
+                  )
                 ),
-              )
-            ),
-            // Action buttons
-            Expanded(
-              flex: 1,
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(top: BorderSide(width: MySizes.borderWidth, color: MyColors.greyColor))
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: MySizes.modalContPdd, right: MySizes.modalContPdd),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    spacing: 10,
-                    children: [
-                      MyActionButton(text: "Add Game", onPressed: () {
-                        // To get a game out of modal window 
-                        // right to games list
-                        GameModel game = GameModel(gameIconPath: selectedIcon, gameName: _controller.text);
-                        Navigator.of(context).pop(game);
-                      }),
-                      MyActionButton(text: "Cancel", onPressed: () {Navigator.of(context).pop(null);})
-                    ],
+                // Action buttons
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border(top: BorderSide(width: MySizes.borderWidth, color: MyColors.greyColor))
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: MySizes.modalContPdd, right: MySizes.modalContPdd),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        spacing: 10,
+                        children: [
+                          MyActionButton(text: isGameEdit? "Save" : "Add Game", onPressed: () {
+                            // To get a game out of modal window 
+                            // right to games list
+                            GameModel game = GameModel(gameIconPath: selectedIcon, gameName: _controller.text);
+                            Navigator.of(context).pop(game);
+                          }),
+                          MyActionButton(text: "Cancel", onPressed: () {Navigator.of(context).pop(null);})
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            )
-          ],
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );

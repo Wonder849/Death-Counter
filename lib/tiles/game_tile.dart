@@ -41,9 +41,9 @@ class _GameTileState extends State<GameTile> {
       await _firestoreService.updateGame(
         _uid, 
         widget.game.gameId!,
-        widget.game.gameIconPath, 
-        widget.game.gameName,
-        widget.game.gameDeaths
+        newGame.gameIconPath, 
+        newGame.gameName,
+        newGame.gameDeaths
       );
     }
   }
